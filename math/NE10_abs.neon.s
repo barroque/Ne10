@@ -294,8 +294,8 @@ abs_vec3f_neon:
 
         @ absolute values
         vabs.f32          d0, d0
-        vabs.f32          d1, d1
         vabs.f32          d2, d2
+        vabs.f32          d4, d4
 
         vst3.32           {d0[0], d2[0], d4[0]}, [r0]!
 

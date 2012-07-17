@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-#include "NE10.h"
+#include "NE10_types.h"
 
 arm_result_t submat_2x2f_neon(arm_mat2x2f_t * dst, arm_mat2x2f_t * src1, arm_mat2x2f_t * src2, unsigned int count)
 {

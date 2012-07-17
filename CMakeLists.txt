@@ -20,6 +20,7 @@ project(NE10 C ASM)
 option(NE10_BUILD_SHARED "Build NE10 shared libraries" OFF)
 option(NE10_BUILD_STATIC "Build NE10 static libraries" ON)
 option(NE10_BUILD_EXAMPLES "Build NE10 examples" ON)
+option(NE10_BUILD_UNIT_TEST "Build NE10 UNIT TEST" ON)
 
 set(NE10_VERSION 10)
 
@@ -29,10 +30,14 @@ set( CMAKE_C_FLAGS "-O3 -mthumb-interwork -march=armv7-a -mcpu=cortex-a9 -mfpu=v
 set( CMAKE_ASM_FLAGS "-mthumb-interwork -march=armv7-a -mcpu=cortex-a9 -mfpu=neon" )
 
 # The NE10 library.
-add_subdirectory(source)
+add_subdirectory("math")
+#add_subdirectory(common)
 
 if(NE10_BUILD_EXAMPLES)
-    add_subdirectory(test)
+    add_subdirectory(samples)
 endif()
 
+if(NE10_BUILD_UNIT_TEST)
+    add_subdirectory(test)
+endif()
 

@@ -29,7 +29,7 @@ extern "C" {
 extern arm_result_t NE10_HasNEON();
 
 /*!
-    This routine initializes all the function pointers defined in "NE10.h" with pointers to ARM NEON or ARM VFP implementations.
+    This routine initializes all the math function pointers defined in "NE10_math.h" with pointers to ARM NEON or ARM VFP implementations.
  */
 extern arm_result_t NE10_init_math();
 

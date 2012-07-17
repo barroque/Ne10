@@ -15,7 +15,7 @@
  */
 
 /*
- * NE10 Library : headers/NE10_random.h
+ * NE10 Library : test/include/NE10_random.h
  */
 
 

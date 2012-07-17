@@ -18,8 +18,8 @@
  * NE10 Library : math/NE10_identitymat.c
  */
 
-#include "NE10.h"
-#include "../common/macros.h"
+#include "NE10_types.h"
+#include "macros.h"
 
 arm_result_t identitymat_2x2f_c(arm_mat2x2f_t * dst, unsigned int count)
 {

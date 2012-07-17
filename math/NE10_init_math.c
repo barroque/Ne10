@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-#include "NE10.h"
+#include "NE10_math.h"
 
 #include <stdio.h>
 
@@ -237,7 +237,7 @@ arm_result_t NE10_init_math()
     }
 }
 
-// These are actual definitions of our function pointers that are declared in inc/NE10.h
+// These are actual definitions of our function pointers that are declared in inc/NE10_types.h
 arm_result_t (*addc_float)(arm_float_t * dst, arm_float_t * src, const arm_float_t cst, unsigned int count);
 arm_result_t (*addc_vec2f)(arm_vec2f_t * dst, arm_vec2f_t * src, const arm_vec2f_t * cst, unsigned int count);
 arm_result_t (*addc_vec3f)(arm_vec3f_t * dst, arm_vec3f_t * src, const arm_vec3f_t * cst, unsigned int count);

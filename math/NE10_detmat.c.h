@@ -21,8 +21,8 @@
 #ifndef __NE10_DETMAT_C_H__
 #define __NE10_DETMAT_C_H__
 
-#include "NE10.h"
-#include "../common/macros.h"
+#include "NE10_types.h"
+#include "macros.h"
 
 #include <assert.h>
 

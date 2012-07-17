@@ -18,8 +18,8 @@
  * NE10 Library : math/NE10_mlac.neon.c
  */
 
-#include "NE10.h"
-#include "../common/macros.h"
+#include "NE10_types.h"
+#include "macros.h"
 
 #include <assert.h>
 #include <arm_neon.h>

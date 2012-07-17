@@ -97,34 +97,6 @@ endforeach(neon_file)
 set(NE10_INIT_SRCS
     NE10_init_math.c
 )
-# Define test files.
-set(NE10_TEST_SRCS
-    ./test/NE10_abs_test.c
-    ./test/NE10_addc_test.c
-    ./test/NE10_add_test.c
-    ./test/NE10_divc_test.c
-    ./test/NE10_div_test.c
-    ./test/NE10_len_test.c
-    ./test/NE10_mlac_test.c
-    ./test/NE10_mla_test.c
-    ./test/NE10_mulc_test.c
-    ./test/NE10_mul_test.c
-    ./test/NE10_normalize_test.c
-    ./test/NE10_rsbc_test.c
-    ./test/NE10_setc_test.c
-    ./test/NE10_subc_test.c
-    ./test/NE10_sub_test.c
-    ./test/NE10_dot_test.c
-    ./test/NE10_cross_test.c
-    ./test/NE10_addmat_test.c
-    ./test/NE10_submat_test.c
-    ./test/NE10_mulmat_test.c
-    ./test/NE10_mulcmatvec_test.c
-    ./test/NE10_detmat_test.c
-    ./test/NE10_invmat_test.c
-    ./test/NE10_transmat_test.c
-    ./test/NE10_identitymat_test.c
-)
 
 include_directories (
     ../inc
@@ -173,6 +145,7 @@ if(NE10_BUILD_SHARED)
     )
 
 endif()
+
 
 # install libraries
 #if(NE10_BUILD_SHARED)

@@ -14,28 +14,32 @@
 #  limitations under the License.
 #
 
+#add definition for regression or smoke test
+add_definitions(-DSMOKE_TEST)
 # header
 include_directories (
-    ../inc
-    ../
+    ${PROJECT_SOURCE_DIR}/inc
+    ${PROJECT_SOURCE_DIR}/test/include
 )
 
-if(NE10_BUILD_SHARED)
-    add_executable(NE10_test_dynamic NE10_test.c)
-    target_link_libraries (
-        NE10_test_dynamic
-        NE10_test
-        m
-    )
-endif()
+# Define common test files.
+set(NE10_TEST_COMMON_SRCS
+    ${PROJECT_SOURCE_DIR}/test/src/seatest.c
+    ${PROJECT_SOURCE_DIR}/test/src/unit_test_common.c
+    ${PROJECT_SOURCE_DIR}/test/src/NE10_random.c
+)
+
+# Define math test files.
+set(NE10_TEST_MATH_SRCS
+    ${PROJECT_SOURCE_DIR}/math/test/test_main.c
+    ${PROJECT_SOURCE_DIR}/math/test/test_suite_math.c
+)
 
 if(NE10_BUILD_STATIC)
-    add_executable(NE10_test_static NE10_test.c)
+    add_executable(NE10_math_unit_test_static ${NE10_TEST_MATH_SRCS} ${NE10_TEST_COMMON_SRCS})
     target_link_libraries (
-        NE10_test_static
-        NE10
+        NE10_math_unit_test_static
+        NE10_math
         m
     )
 endif()
-
-

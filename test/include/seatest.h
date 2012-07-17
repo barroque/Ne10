@@ -28,7 +28,7 @@ void seatest_assert_true(int test, const char* function, unsigned int line);
 void seatest_assert_false(int test, const char* function, unsigned int line);
 void seatest_assert_int_equal(int expected, int actual, const char* function, unsigned int line);
 void seatest_assert_ulong_equal(unsigned long expected, unsigned long actual, const char* function, unsigned int line);
-void seatest_assert_float_array_equal(float expected, float actual, unsigned int delta, unsigned int seatest_count, unsigned int loop_round, const char* function, unsigned int line);
+void seatest_assert_float_vec_equal(float expected, float actual, unsigned int delta, unsigned int seatest_vec, const char* function, unsigned int line);
 void seatest_assert_float_equal(float expected, float actual, unsigned int delta, unsigned int loop_round, const char* function, unsigned int line);
 void seatest_assert_double_equal(double expected, double actual, double delta, const char* function, unsigned int line);
 void seatest_assert_string_equal(char* expected, char* actual, const char* function, unsigned int line);
@@ -65,11 +65,11 @@ Assert Macros
 #define assert_string_starts_with(expected, actual) do {  seatest_assert_string_starts_with(expected, actual, __FUNCTION__, __LINE__); } while (0)
 #define assert_string_ends_with(expected, actual) do {  seatest_assert_string_ends_with(expected, actual, __FUNCTION__, __LINE__); } while (0)
 
-#define assert_float_array_equal(expected, actual, delta, n, loop_round) do { \
-    int seatest_count; \
-    for(seatest_count=0; seatest_count<n; seatest_count++) \
+#define assert_float_vec_equal(expected, actual, delta, n) do { \
+    int seatest_vec; \
+    for(seatest_vec=0; seatest_vec<(n); seatest_vec++) \
     { \
-        seatest_assert_float_array_equal(expected[seatest_count], actual[seatest_count], delta, seatest_count, loop_round, __FUNCTION__, __LINE__); \
+        seatest_assert_float_vec_equal((expected)[seatest_vec], (actual)[seatest_vec], (delta), seatest_vec, __FUNCTION__, __LINE__); \
     } \
 } while (0)
 /*
