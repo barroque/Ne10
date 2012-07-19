@@ -15,7 +15,7 @@
 #
 
 #add definition for regression or smoke test
-add_definitions(-DSMOKE_TEST)
+add_definitions(-DSMOKE_TEST) #-DPERFORMANCE_TEST)  #-DDEBUG_TRACE) #REGRESSION_TEST) -DSMOKE_TEST 
 # header
 include_directories (
     ${PROJECT_SOURCE_DIR}/inc

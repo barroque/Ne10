@@ -119,35 +119,41 @@ int EQUALS_FLOAT( float fa, float fb , unsigned int err )
   return 1; // acceptable, return TRUE
 }
 
-char ARRAY_GUARD_SIG[] = { 0x00, 0x00, 0x00, 0x00,
-                           0x00, 0x00, 0x00, 0x00,
-                           0x00, 0x00, 0x00, 0x00,
-                           0x00, 0x00, 0x00, 0x00 };
-
-// this function adds a ARRAY_GUARD_LEN byte signature to the begining and the end of an array, minimum acceptable size for the array is 2*ARRAY_GUARD_LEN bytes.
-int GUARD_ARRAY( void* array, unsigned int array_length )
+arm_float_t ARRAY_GUARD_SIG[ARRAY_GUARD_LEN] = { 10.0f, 20.0f, 30.0f, 40.0f };
+// this function adds a ARRAY_GUARD_LEN signature to the begining and the end of an array, minimum acceptable size for the array is 2*ARRAY_GUARD_LEN.
+int GUARD_ARRAY( arm_float_t* array, unsigned int array_length )
 {
-  char* the_array = (char*) array;
-  if ( array_length < (2*ARRAY_GUARD_LEN) ) return 0;
-  memcpy( the_array, ARRAY_GUARD_SIG, ARRAY_GUARD_LEN );
-  memcpy( &the_array[array_length-ARRAY_GUARD_LEN], ARRAY_GUARD_SIG, ARRAY_GUARD_LEN );
-  return 1;
+    arm_float_t* the_array = array - ARRAY_GUARD_LEN;
+    memcpy( the_array, ARRAY_GUARD_SIG, sizeof(ARRAY_GUARD_SIG) );
+    the_array = array + array_length;
+    memcpy( the_array, ARRAY_GUARD_SIG, sizeof(ARRAY_GUARD_SIG) );
+    return 1;
 }
 
-// this function returns TRUE if the signature matches the guard and returns FALSE otherwise
-int CHECK_ARRAY_GUARD( void* array, unsigned int array_length )
+// this function returns TRUE if the signature matches the ARRAY_GUARD_SIGguard and returns FALSE otherwise
+int CHECK_ARRAY_GUARD( arm_float_t* array, unsigned int array_length )
 {
-  char* the_array = (char*) array;
-  if ( strncmp(the_array, ARRAY_GUARD_SIG, ARRAY_GUARD_LEN) ) {
-      fprintf( stderr, " ERROR: Array guard signature is wrong. \n" );
-      return 0; // Match not found, return FALSE
-  }
+    arm_float_t* the_array = array - ARRAY_GUARD_LEN;
+    int i;
+    for (i = 0; i < ARRAY_GUARD_LEN; i++)
+    {
+        if (! EQUALS_FLOAT(the_array[i], ARRAY_GUARD_SIG[i], ERROR_MARGIN_SMALL)) 
+        {
+            fprintf( stderr, " ERROR: prefix array guard signature is wrong. \n" );
+            return 0; // Match not found, return FALSE
+        }
+    }
 
-  if ( strncmp(&the_array[array_length-ARRAY_GUARD_LEN], ARRAY_GUARD_SIG, ARRAY_GUARD_LEN)  ) {
-      fprintf( stderr, " ERROR: Array guard signature is wrong. \n" );
-      return 0; // Match not found, return FALSE
-  }
-
-  return 1;
+    the_array = array + array_length;
+    for (i = 0; i < ARRAY_GUARD_LEN; i++)
+    {
+        if (! EQUALS_FLOAT(the_array[i], ARRAY_GUARD_SIG[i], ERROR_MARGIN_SMALL)) 
+        {
+            fprintf( stderr, " ERROR: suffix array guard signature is wrong. \n" );
+            return 0; // Match not found, return FALSE
+        }
+    }
+    
+    return 1;
 }
 

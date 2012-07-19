@@ -48,6 +48,11 @@
 #  endif
 #endif
 
+//detect that it is performance test
+#if defined PERFORMANCE_TEST
+#  define PERF_TEST_ITERATION 1024
+#endif
+
 // length of the test data arrays
 // A number that is not divisible by 2 3 and 4 so that all the
 //  execution paths are tested; The larger the number the more
@@ -64,7 +69,7 @@
 #define SIGNBIT_MASK  0x7FFFFFFF
 
 // What's the acceptable error between the integer representations of two float values
-#define ERROR_MARGIN_SMALL 0x02
+#define ERROR_MARGIN_SMALL 0x0A
 #define ERROR_MARGIN_LARGE 0xFF
 
 // What's the acceptable number of warnings in a test
@@ -79,6 +84,14 @@
         FILL_FLOAT_ARRAY((src), (length)); \
     }
 
+#define NE10_SRC_ALLOC_LIMIT(src, guarded_src, length) { \
+        (guarded_src) = (arm_float_t*) calloc (2*ARRAY_GUARD_LEN + (length), sizeof(arm_float_t)); \
+        if ((guarded_src) == NULL) \
+            printf ("error: calloc src failed\n"); \
+        (src) = (guarded_src) + ARRAY_GUARD_LEN; \
+        FILL_FLOAT_ARRAY_LIMIT((src), (length)); \
+    }
+
 #define NE10_DST_ALLOC(dst, guarded_dst, length) { \
         (guarded_dst) = (arm_float_t*) calloc (2*ARRAY_GUARD_LEN + (length), sizeof(arm_float_t)); \
         if ((guarded_dst) == NULL) \
@@ -86,6 +99,11 @@
         (dst) = (guarded_dst) + ARRAY_GUARD_LEN; \
     }
 
+#define GET_TIME(time, code) { \
+        (time) = GetTickCount(); \
+        code \
+        time = GetTickCount() - time;\
+    }
 typedef arm_result_t (*arm_func_5args_t) (void * dst, void * acc, void * src1, void * src2, unsigned int count);
 typedef arm_result_t (*arm_func_4args_t) (void * dst, void * src1, void * src2, unsigned int count);
 typedef arm_result_t (*arm_func_3args_t) (void * dst, void * src, unsigned int count);
@@ -97,8 +115,8 @@ extern void FILL_FLOAT_ARRAY_LIMIT_GT1( arm_float_t *arr, unsigned int count );
 
 // this function checks whether the difference between two float values is within the acceptable error range
 extern int EQUALS_FLOAT( float fa, float fb , unsigned int err );
-extern int GUARD_ARRAY( void* array, unsigned int array_length );
-extern int CHECK_ARRAY_GUARD( void* array, unsigned int array_length );
+extern int GUARD_ARRAY( arm_float_t* array, unsigned int array_length );
+extern int CHECK_ARRAY_GUARD( arm_float_t* array, unsigned int array_length );
 
 #endif // __UNIT_TEST_COMMON
 
