@@ -20,7 +20,20 @@ project(NE10 C ASM)
 option(NE10_BUILD_SHARED "Build NE10 shared libraries" OFF)
 option(NE10_BUILD_STATIC "Build NE10 static libraries" ON)
 option(NE10_BUILD_EXAMPLES "Build NE10 examples" ON)
-option(NE10_BUILD_UNIT_TEST "Build NE10 UNIT TEST" ON)
+
+#unit test options
+option(NE10_BUILD_UNIT_TEST "Build NE10 unit test" OFF)
+if (NE10_BUILD_UNIT_TEST)
+    #decide the test is smoke, regression or performance test, only one of three options is ON!
+    option(NE10_SMOKE_TEST "Run smoke test" OFF)
+    option(NE10_REGRESSION_TEST "Run regression test" OFF)
+    option(NE10_PERFORMANCE_TEST "Run performance test" OFF)
+
+    option(NE10_DEBUG_TRACE "Print debug trace" OFF)
+endif()
+
+#select functionalities to be compiled
+option(NE10_ENABLE_MATH "Build math functionalities to NE10" ON)
 
 set(NE10_VERSION 10)
 
@@ -30,8 +43,7 @@ set( CMAKE_C_FLAGS "-O3 -mthumb-interwork -march=armv7-a -mcpu=cortex-a9 -mfpu=v
 set( CMAKE_ASM_FLAGS "-mthumb-interwork -march=armv7-a -mcpu=cortex-a9 -mfpu=neon" )
 
 # The NE10 library.
-add_subdirectory("math")
-#add_subdirectory(common)
+add_subdirectory(modules)
 
 if(NE10_BUILD_EXAMPLES)
     add_subdirectory(samples)

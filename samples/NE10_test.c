@@ -23,7 +23,7 @@ void main()
 {
    printf ( "Going to initialze NE10...\n" );
 
-   NE10_init_math();
+   NE10_init();
 
    printf ( "NE10 has been initialized.\n" );
 

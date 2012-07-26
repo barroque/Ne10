@@ -24,7 +24,6 @@
         .text
         .syntax   unified
 
-@.include "headers/NE10header.s"
 .include "NE10header.s"
 
 
@@ -94,6 +93,7 @@ mulcmatvec_cm2x2f_v2f_neon:
         @ load the constant matrix
         @ d0 = m11(a)  d2 = m12(c)
         @ d1 = m21(b)  d3 = m22(d)
+        vld4.32         { d0[0], d1[0], d2[0], d3[0] }, [r1]
 
         cmp               r3, #0
         beq               .L_check_mat2x2
@@ -106,7 +106,6 @@ mulcmatvec_cm2x2f_v2f_neon:
         @       q8=(x1,x2,x3,x4)
         @       q9=(y1,y2,y3,y4)
 
-        vld4.32         { d0[0], d1[0], d2[0], d3[0] }, [r1]
         vld2.32         {  d16,  d17,  d18,  d19 }, [r2]!
 
         subs            r3, r3, #4          @ 8 for this set

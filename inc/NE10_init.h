@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-#include <NE10.h>
+#include "NE10.h"
 
 #ifndef NE10_init_H
 #define NE10_init_H
@@ -29,9 +29,14 @@ extern "C" {
 extern arm_result_t NE10_HasNEON();
 
 /*!
+    This routine initializes all the function pointers.
+ */
+extern arm_result_t NE10_init();
+
+/*!
     This routine initializes all the math function pointers defined in "NE10_math.h" with pointers to ARM NEON or ARM VFP implementations.
  */
-extern arm_result_t NE10_init_math();
+extern arm_result_t NE10_init_math(int is_NEON_available);
 
 #ifdef __cplusplus
 }

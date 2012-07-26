@@ -32,8 +32,9 @@
 extern "C" {
 #endif
 
-#include <NE10_types.h>
-#include <NE10_math.h>
+#include "NE10_types.h"
+#include "NE10_init.h"
+#include "NE10_math.h"
 
 #ifdef __cplusplus
 }

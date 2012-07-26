@@ -14,8 +14,19 @@
 #  limitations under the License.
 #
 
-#add definition for regression or smoke test
-add_definitions(-DSMOKE_TEST) #-DPERFORMANCE_TEST)  #-DDEBUG_TRACE) #REGRESSION_TEST) -DSMOKE_TEST 
+#add definition for regression, smoke or regression test
+if (NE10_SMOKE_TEST)
+    add_definitions(-DSMOKE_TEST)
+elseif (NE10_REGRESSION_TEST)
+    add_definitions(-DREGRESSION_TEST)
+elseif (NE10_PERFORMANCE_TEST)
+    add_definitions(-DPERFORMANCE_TEST)
+endif()
+
+if (NE10_DEBUG_TRACE)
+    add_definitions(-DDEBUG_TRACE)
+endif()
+
 # header
 include_directories (
     ${PROJECT_SOURCE_DIR}/inc
@@ -29,17 +40,19 @@ set(NE10_TEST_COMMON_SRCS
     ${PROJECT_SOURCE_DIR}/test/src/NE10_random.c
 )
 
-# Define math test files.
-set(NE10_TEST_MATH_SRCS
-    ${PROJECT_SOURCE_DIR}/math/test/test_main.c
-    ${PROJECT_SOURCE_DIR}/math/test/test_suite_math.c
-)
-
-if(NE10_BUILD_STATIC)
-    add_executable(NE10_math_unit_test_static ${NE10_TEST_MATH_SRCS} ${NE10_TEST_COMMON_SRCS})
-    target_link_libraries (
-        NE10_math_unit_test_static
-        NE10_math
-        m
+if(NE10_ENABLE_MATH)
+    # Define math test files.
+    set(NE10_TEST_MATH_SRCS
+        ${PROJECT_SOURCE_DIR}/modules/math/test/test_main.c
+        ${PROJECT_SOURCE_DIR}/modules/math/test/test_suite_math.c
     )
+
+    if(NE10_BUILD_STATIC)
+        add_executable(NE10_math_unit_test_static ${NE10_TEST_MATH_SRCS} ${NE10_TEST_COMMON_SRCS})
+        target_link_libraries (
+            NE10_math_unit_test_static
+            NE10
+            m
+        )
+    endif()
 endif()

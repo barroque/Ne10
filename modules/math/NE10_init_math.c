@@ -14,46 +14,13 @@
  *  limitations under the License.
  */
 
-#include "NE10_math.h"
-
 #include <stdio.h>
 
-#define CPUINFO_BUFFER_SIZE  (1024*4)
+#include "NE10_math.h"
 
-// This local variable indicates whether or not the running platform supports ARM NEON
-arm_result_t is_NEON_available = NE10_ERR;
-
-arm_result_t NE10_HasNEON()
+arm_result_t NE10_init_math(int is_NEON_available)
 {
-    return is_NEON_available;
-}
-
-arm_result_t NE10_init_math()
-{
-    FILE*   infofile = NULL;               // To open the file /proc/cpuinfo
-    char    cpuinfo[CPUINFO_BUFFER_SIZE];  // The buffer to read in the string
-    size_t  bytes = 0;                     // Numbers of bytes read from the file
-    int     i = 0;                         // Temporary loop counter
-
-    memset( cpuinfo, 0, CPUINFO_BUFFER_SIZE );
-    infofile = fopen( "/proc/cpuinfo", "r" );
-    bytes    = fread( cpuinfo, 1, sizeof(cpuinfo), infofile );
-    fclose( infofile );
-
-    if( 0 == bytes || CPUINFO_BUFFER_SIZE == bytes )
-    {
-        fprintf( stderr, "ERROR: Couldn't read the file \"/proc/cpuinfo\". NE10_init() failed.\n");
-        return NE10_ERR;
-    }
-
-    while( '\0' != cpuinfo[i] ) cpuinfo[i++] = (char)tolower(cpuinfo[i]);
-
-    if ( 0 != strstr(cpuinfo, "neon") )
-    {
-       is_NEON_available = NE10_OK;
-    }
-
-    if ( NE10_OK == NE10_HasNEON() )
+    if ( NE10_OK == is_NEON_available )
     {
       addc_float = addc_float_neon;
       addc_vec2f = addc_vec2f_neon;

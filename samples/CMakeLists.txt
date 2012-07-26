@@ -16,23 +16,23 @@
 
 # header
 include_directories (
-    ../inc
+    ${PROJECT_SOURCE_DIR}/inc
 )
 
 if(NE10_BUILD_SHARED)
-    add_executable(NE10_math_test_dynamic NE10_test.c)
+    add_executable(NE10_test_dynamic NE10_test.c)
     target_link_libraries (
-        NE10_math_test_dynamic
-        NE10_math_test
+        NE10_test_dynamic
+        NE10_test
         m
     )
 endif()
 
 if(NE10_BUILD_STATIC)
-    add_executable(NE10_math_test_static NE10_test.c)
+    add_executable(NE10_test_static NE10_test.c)
     target_link_libraries (
-        NE10_math_test_static
-        NE10_math
+        NE10_test_static
+        NE10
         m
     )
 endif()
