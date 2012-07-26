@@ -38,9 +38,14 @@ Licensed under the Apache License, Version 2.0
 
 (See LICENSE for details)
 
+Build
+=====
+
+See CMakeBuilding.txt file in the "doc" folder
+
 Usage
 =====
 
-See USAGE.txt file
+See USAGE.txt file in the "doc" folder
 
 

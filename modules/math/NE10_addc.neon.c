@@ -15,15 +15,14 @@
  */
 
 /*
- * NE10 Library : source/NE10_addc.neon.c
+ * NE10 Library : math/NE10_addc.neon.c
  */
-
-#include "NE10.h"
-//#include "../headers/macros.h"
-#include "macros.h"
 
 #include <assert.h>
 #include <arm_neon.h>
+
+#include "NE10.h"
+#include "macros.h"
 
 
 arm_result_t addc_float_neon(arm_float_t * dst, arm_float_t * src, const arm_float_t cst, unsigned int count)

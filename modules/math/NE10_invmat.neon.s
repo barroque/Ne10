@@ -15,7 +15,7 @@
 @
 
 @
-@ NE10 Library : source/NE10_invmat.neon.s
+@ NE10 Library : math/NE10_invmat.neon.s
 @
 
 
@@ -24,8 +24,6 @@
         .text
         .syntax   unified
 
-@.include "headers/NE10header.s"
-@.include "source/NE10_detmat.neon.inc.s"
 .include "NE10header.s"
 .include "NE10_detmat.neon.inc.s"
 

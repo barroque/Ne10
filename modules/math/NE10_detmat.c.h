@@ -15,7 +15,7 @@
  */
 
 /*
- * NE10 Library : source/NE10_detmat.c.h
+ * NE10 Library : math/NE10_detmat.c.h
  */
 
 #ifndef __NE10_DETMAT_C_H__

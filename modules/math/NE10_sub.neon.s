@@ -15,13 +15,12 @@
 @
 
 @
-@ NE10 Library : source/NE10_sub.neon.s
+@ NE10 Library : math/NE10_sub.neon.s
 @
 
         .text
         .syntax   unified
 
-@.include "headers/NE10header.s"
 .include "NE10header.s"
 
 

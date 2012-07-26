@@ -15,7 +15,7 @@
 @
 
 @
-@ NE10 Library : source/NE10_mulcmatvec.neon.s
+@ NE10 Library : math/NE10_mulcmatvec.neon.s
 @
 
 

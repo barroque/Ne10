@@ -15,7 +15,7 @@
  */
 
 /*
- * NE10 Library : headers/unit_test_common.h
+ * NE10 Library : test/include/unit_test_common.h
  */
 
 #ifndef __UNIT_TEST_COMMON__
