@@ -20,11 +20,11 @@
 
 #include "seatest.h"
 
-void test_fixture_basic_math( void );
+void test_fixture_math( void );
 
 void all_tests( void )
 {
-    test_fixture_basic_math();
+    test_fixture_math();
 }
 
 

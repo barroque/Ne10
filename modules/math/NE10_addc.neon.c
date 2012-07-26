@@ -15,10 +15,11 @@
  */
 
 /*
- * NE10 Library : math/NE10_addc.neon.c
+ * NE10 Library : source/NE10_addc.neon.c
  */
 
-#include "NE10_types.h"
+#include "NE10.h"
+//#include "../headers/macros.h"
 #include "macros.h"
 
 #include <assert.h>

@@ -107,6 +107,7 @@
 typedef arm_result_t (*arm_func_5args_t) (void * dst, void * acc, void * src1, void * src2, unsigned int count);
 typedef arm_result_t (*arm_func_4args_t) (void * dst, void * src1, void * src2, unsigned int count);
 typedef arm_result_t (*arm_func_3args_t) (void * dst, void * src, unsigned int count);
+typedef arm_result_t (*arm_func_2args_t) (void * dst, unsigned int count);
 
 
 extern void FILL_FLOAT_ARRAY( arm_float_t *arr, unsigned int count );
