@@ -23,58 +23,58 @@
 
 #include <assert.h>
 
-arm_result_t addmat_2x2f_c(arm_mat2x2f_t * dst, arm_mat2x2f_t * src1, arm_mat2x2f_t * src2, unsigned int count)
+arm_result_t addmat_2x2f_c (arm_mat2x2f_t * dst, arm_mat2x2f_t * src1, arm_mat2x2f_t * src2, unsigned int count)
 {
-  NE10_X_OPERATION_FLOAT_C
-  (
-    dst[ itr ].c1.r1 = src1[ itr ].c1.r1 + src2[ itr ].c1.r1;
-    dst[ itr ].c1.r2 = src1[ itr ].c1.r2 + src2[ itr ].c1.r2;
+    NE10_X_OPERATION_FLOAT_C
+    (
+        dst[ itr ].c1.r1 = src1[ itr ].c1.r1 + src2[ itr ].c1.r1;
+        dst[ itr ].c1.r2 = src1[ itr ].c1.r2 + src2[ itr ].c1.r2;
 
-    dst[ itr ].c2.r1 = src1[ itr ].c2.r1 + src2[ itr ].c2.r1;
-    dst[ itr ].c2.r2 = src1[ itr ].c2.r2 + src2[ itr ].c2.r2;
-  );
+        dst[ itr ].c2.r1 = src1[ itr ].c2.r1 + src2[ itr ].c2.r1;
+        dst[ itr ].c2.r2 = src1[ itr ].c2.r2 + src2[ itr ].c2.r2;
+    );
 }
 
-arm_result_t addmat_3x3f_c(arm_mat3x3f_t * dst, arm_mat3x3f_t * src1, arm_mat3x3f_t * src2, unsigned int count)
+arm_result_t addmat_3x3f_c (arm_mat3x3f_t * dst, arm_mat3x3f_t * src1, arm_mat3x3f_t * src2, unsigned int count)
 {
-  NE10_X_OPERATION_FLOAT_C
-  (
-    dst[ itr ].c1.r1 = src1[ itr ].c1.r1 + src2[ itr ].c1.r1;
-    dst[ itr ].c1.r2 = src1[ itr ].c1.r2 + src2[ itr ].c1.r2;
-    dst[ itr ].c1.r3 = src1[ itr ].c1.r3 + src2[ itr ].c1.r3;
+    NE10_X_OPERATION_FLOAT_C
+    (
+        dst[ itr ].c1.r1 = src1[ itr ].c1.r1 + src2[ itr ].c1.r1;
+        dst[ itr ].c1.r2 = src1[ itr ].c1.r2 + src2[ itr ].c1.r2;
+        dst[ itr ].c1.r3 = src1[ itr ].c1.r3 + src2[ itr ].c1.r3;
 
-    dst[ itr ].c2.r1 = src1[ itr ].c2.r1 + src2[ itr ].c2.r1;
-    dst[ itr ].c2.r2 = src1[ itr ].c2.r2 + src2[ itr ].c2.r2;
-    dst[ itr ].c2.r3 = src1[ itr ].c2.r3 + src2[ itr ].c2.r3;
+        dst[ itr ].c2.r1 = src1[ itr ].c2.r1 + src2[ itr ].c2.r1;
+        dst[ itr ].c2.r2 = src1[ itr ].c2.r2 + src2[ itr ].c2.r2;
+        dst[ itr ].c2.r3 = src1[ itr ].c2.r3 + src2[ itr ].c2.r3;
 
-    dst[ itr ].c3.r1 = src1[ itr ].c3.r1 + src2[ itr ].c3.r1;
-    dst[ itr ].c3.r2 = src1[ itr ].c3.r2 + src2[ itr ].c3.r2;
-    dst[ itr ].c3.r3 = src1[ itr ].c3.r3 + src2[ itr ].c3.r3;
-  );
+        dst[ itr ].c3.r1 = src1[ itr ].c3.r1 + src2[ itr ].c3.r1;
+        dst[ itr ].c3.r2 = src1[ itr ].c3.r2 + src2[ itr ].c3.r2;
+        dst[ itr ].c3.r3 = src1[ itr ].c3.r3 + src2[ itr ].c3.r3;
+    );
 }
 
-arm_result_t addmat_4x4f_c(arm_mat4x4f_t * dst, arm_mat4x4f_t * src1, arm_mat4x4f_t * src2, unsigned int count)
+arm_result_t addmat_4x4f_c (arm_mat4x4f_t * dst, arm_mat4x4f_t * src1, arm_mat4x4f_t * src2, unsigned int count)
 {
-  NE10_X_OPERATION_FLOAT_C
-  (
-    dst[ itr ].c1.r1 = src1[ itr ].c1.r1 + src2[ itr ].c1.r1;
-    dst[ itr ].c1.r2 = src1[ itr ].c1.r2 + src2[ itr ].c1.r2;
-    dst[ itr ].c1.r3 = src1[ itr ].c1.r3 + src2[ itr ].c1.r3;
-    dst[ itr ].c1.r4 = src1[ itr ].c1.r4 + src2[ itr ].c1.r4;
+    NE10_X_OPERATION_FLOAT_C
+    (
+        dst[ itr ].c1.r1 = src1[ itr ].c1.r1 + src2[ itr ].c1.r1;
+        dst[ itr ].c1.r2 = src1[ itr ].c1.r2 + src2[ itr ].c1.r2;
+        dst[ itr ].c1.r3 = src1[ itr ].c1.r3 + src2[ itr ].c1.r3;
+        dst[ itr ].c1.r4 = src1[ itr ].c1.r4 + src2[ itr ].c1.r4;
 
-    dst[ itr ].c2.r1 = src1[ itr ].c2.r1 + src2[ itr ].c2.r1;
-    dst[ itr ].c2.r2 = src1[ itr ].c2.r2 + src2[ itr ].c2.r2;
-    dst[ itr ].c2.r3 = src1[ itr ].c2.r3 + src2[ itr ].c2.r3;
-    dst[ itr ].c2.r4 = src1[ itr ].c2.r4 + src2[ itr ].c2.r4;
+        dst[ itr ].c2.r1 = src1[ itr ].c2.r1 + src2[ itr ].c2.r1;
+        dst[ itr ].c2.r2 = src1[ itr ].c2.r2 + src2[ itr ].c2.r2;
+        dst[ itr ].c2.r3 = src1[ itr ].c2.r3 + src2[ itr ].c2.r3;
+        dst[ itr ].c2.r4 = src1[ itr ].c2.r4 + src2[ itr ].c2.r4;
 
-    dst[ itr ].c3.r1 = src1[ itr ].c3.r1 + src2[ itr ].c3.r1;
-    dst[ itr ].c3.r2 = src1[ itr ].c3.r2 + src2[ itr ].c3.r2;
-    dst[ itr ].c3.r3 = src1[ itr ].c3.r3 + src2[ itr ].c3.r3;
-    dst[ itr ].c3.r4 = src1[ itr ].c3.r4 + src2[ itr ].c3.r4;
+        dst[ itr ].c3.r1 = src1[ itr ].c3.r1 + src2[ itr ].c3.r1;
+        dst[ itr ].c3.r2 = src1[ itr ].c3.r2 + src2[ itr ].c3.r2;
+        dst[ itr ].c3.r3 = src1[ itr ].c3.r3 + src2[ itr ].c3.r3;
+        dst[ itr ].c3.r4 = src1[ itr ].c3.r4 + src2[ itr ].c3.r4;
 
-    dst[ itr ].c4.r1 = src1[ itr ].c4.r1 + src2[ itr ].c4.r1;
-    dst[ itr ].c4.r2 = src1[ itr ].c4.r2 + src2[ itr ].c4.r2;
-    dst[ itr ].c4.r3 = src1[ itr ].c4.r3 + src2[ itr ].c4.r3;
-    dst[ itr ].c4.r4 = src1[ itr ].c4.r4 + src2[ itr ].c4.r4;
-  );
+        dst[ itr ].c4.r1 = src1[ itr ].c4.r1 + src2[ itr ].c4.r1;
+        dst[ itr ].c4.r2 = src1[ itr ].c4.r2 + src2[ itr ].c4.r2;
+        dst[ itr ].c4.r3 = src1[ itr ].c4.r3 + src2[ itr ].c4.r3;
+        dst[ itr ].c4.r4 = src1[ itr ].c4.r4 + src2[ itr ].c4.r4;
+    );
 }

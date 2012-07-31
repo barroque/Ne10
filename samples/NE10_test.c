@@ -21,11 +21,8 @@
 
 void main()
 {
-   printf ( "Going to initialze NE10...\n" );
-
-   NE10_init();
-
-   printf ( "NE10 has been initialized.\n" );
-
+    printf ("Going to initialze NE10...\n");
+    NE10_init();
+    printf ("NE10 has been initialized.\n");
 }
 

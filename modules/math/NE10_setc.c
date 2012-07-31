@@ -23,40 +23,40 @@
 
 #include <assert.h>
 
-arm_result_t setc_float_c(arm_float_t * dst, const arm_float_t cst, unsigned int count)
+arm_result_t setc_float_c (arm_float_t * dst, const arm_float_t cst, unsigned int count)
 {
-  NE10_SETC_OPERATION_X_C
-  (
-    dst[itr] = cst;
-  );
+    NE10_SETC_OPERATION_X_C
+    (
+        dst[itr] = cst;
+    );
 }
 
-arm_result_t setc_vec2f_c(arm_vec2f_t * dst, const arm_vec2f_t * cst, unsigned int count)
+arm_result_t setc_vec2f_c (arm_vec2f_t * dst, const arm_vec2f_t * cst, unsigned int count)
 {
-  NE10_SETC_OPERATION_X_C
-  (
-    dst[itr].x = cst->x;
-    dst[itr].y = cst->y;
-  );
+    NE10_SETC_OPERATION_X_C
+    (
+        dst[itr].x = cst->x;
+        dst[itr].y = cst->y;
+    );
 }
 
-arm_result_t setc_vec3f_c(arm_vec3f_t * dst, const arm_vec3f_t * cst, unsigned int count)
+arm_result_t setc_vec3f_c (arm_vec3f_t * dst, const arm_vec3f_t * cst, unsigned int count)
 {
-  NE10_SETC_OPERATION_X_C
-  (
-    dst[itr].x = cst->x;
-    dst[itr].y = cst->y;
-    dst[itr].z = cst->z;
-  );
+    NE10_SETC_OPERATION_X_C
+    (
+        dst[itr].x = cst->x;
+        dst[itr].y = cst->y;
+        dst[itr].z = cst->z;
+    );
 }
 
-arm_result_t setc_vec4f_c(arm_vec4f_t * dst, const arm_vec4f_t * cst, unsigned int count)
+arm_result_t setc_vec4f_c (arm_vec4f_t * dst, const arm_vec4f_t * cst, unsigned int count)
 {
-  NE10_SETC_OPERATION_X_C
-  (
-    dst[itr].x = cst->x;
-    dst[itr].y = cst->y;
-    dst[itr].z = cst->z;
-    dst[itr].w = cst->w;
-  );
+    NE10_SETC_OPERATION_X_C
+    (
+        dst[itr].x = cst->x;
+        dst[itr].y = cst->y;
+        dst[itr].z = cst->z;
+        dst[itr].w = cst->w;
+    );
 }

@@ -25,32 +25,32 @@
 
 #include <math.h>
 
-arm_result_t len_vec2f_c(arm_float_t * dst, arm_vec2f_t * src, unsigned int count)
+arm_result_t len_vec2f_c (arm_float_t * dst, arm_vec2f_t * src, unsigned int count)
 {
-  NE10_LEN_OPERATION_X_C
-  (
-    dst[ itr ] = sqrt( src[ itr ].x * src[ itr ].x +
-                       src[ itr ].y * src[ itr ].y ) ;
-  );
+    NE10_LEN_OPERATION_X_C
+    (
+        dst[ itr ] = sqrt (src[ itr ].x * src[ itr ].x +
+                           src[ itr ].y * src[ itr ].y) ;
+    );
 }
 
-arm_result_t len_vec3f_c(arm_float_t * dst, arm_vec3f_t * src, unsigned int count)
+arm_result_t len_vec3f_c (arm_float_t * dst, arm_vec3f_t * src, unsigned int count)
 {
-  NE10_LEN_OPERATION_X_C
-  (
-    dst[ itr ] = sqrt( src[ itr ].x * src[ itr ].x +
-                       src[ itr ].y * src[ itr ].y +
-                       src[ itr ].z * src[ itr ].z );
-  );
+    NE10_LEN_OPERATION_X_C
+    (
+        dst[ itr ] = sqrt (src[ itr ].x * src[ itr ].x +
+                           src[ itr ].y * src[ itr ].y +
+                           src[ itr ].z * src[ itr ].z);
+    );
 }
 
-arm_result_t len_vec4f_c(arm_float_t * dst, arm_vec4f_t * src, unsigned int count)
+arm_result_t len_vec4f_c (arm_float_t * dst, arm_vec4f_t * src, unsigned int count)
 {
-  NE10_LEN_OPERATION_X_C
-  (
-    dst[ itr ] = sqrt( src[ itr ].x * src[ itr ].x +
-                       src[ itr ].y * src[ itr ].y +
-                       src[ itr ].z * src[ itr ].z +
-                       src[ itr ].w * src[ itr ].w );
-  );
+    NE10_LEN_OPERATION_X_C
+    (
+        dst[ itr ] = sqrt (src[ itr ].x * src[ itr ].x +
+                           src[ itr ].y * src[ itr ].y +
+                           src[ itr ].z * src[ itr ].z +
+                           src[ itr ].w * src[ itr ].w);
+    );
 }

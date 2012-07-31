@@ -25,7 +25,7 @@
 #include <arm_neon.h>
 
 
-arm_result_t setc_float_neon(arm_float_t * dst, const arm_float_t cst, unsigned int count)
+arm_result_t setc_float_neon (arm_float_t * dst, const arm_float_t cst, unsigned int count)
 {
     NE10_SETC_OPERATION_FLOAT_NEON
     (
@@ -35,7 +35,7 @@ arm_result_t setc_float_neon(arm_float_t * dst, const arm_float_t cst, unsigned 
     );
 }
 
-arm_result_t setc_vec2f_neon(arm_vec2f_t * dst, const arm_vec2f_t * cst, unsigned int count)
+arm_result_t setc_vec2f_neon (arm_vec2f_t * dst, const arm_vec2f_t * cst, unsigned int count)
 {
     NE10_SETC_OPERATION_VEC2F_NEON
     (
@@ -45,17 +45,17 @@ arm_result_t setc_vec2f_neon(arm_vec2f_t * dst, const arm_vec2f_t * cst, unsigne
     );
 }
 
-arm_result_t setc_vec3f_neon(arm_vec3f_t * dst, const arm_vec3f_t * cst, unsigned int count)
+arm_result_t setc_vec3f_neon (arm_vec3f_t * dst, const arm_vec3f_t * cst, unsigned int count)
 {
     NE10_SETC_OPERATION_VEC3F_NEON
     (
         ;// cst1, cst2, and cst3 need not be altered
         ,
         ;// n_tmp_cst.val[0], .val[1], and .val[2] need not be altered
-     );
+    );
 }
 
-arm_result_t setc_vec4f_neon(arm_vec4f_t * dst, const arm_vec4f_t * cst, unsigned int count)
+arm_result_t setc_vec4f_neon (arm_vec4f_t * dst, const arm_vec4f_t * cst, unsigned int count)
 {
     NE10_SETC_OPERATION_VEC4F_NEON
     (

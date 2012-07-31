@@ -25,44 +25,44 @@
 #include <arm_neon.h>
 
 
-arm_result_t mulc_float_neon(arm_float_t * dst, arm_float_t * src, const arm_float_t cst, unsigned int count)
+arm_result_t mulc_float_neon (arm_float_t * dst, arm_float_t * src, const arm_float_t cst, unsigned int count)
 {
     NE10_XC_OPERATION_FLOAT_NEON
     (
-        n_dst = vmulq_f32( n_src , n_cst );
+        n_dst = vmulq_f32 (n_src , n_cst);
         ,
-        n_tmp_src = vmul_f32( n_tmp_src, n_tmp_cst );
+        n_tmp_src = vmul_f32 (n_tmp_src, n_tmp_cst);
     );
 }
 
-arm_result_t mulc_vec2f_neon(arm_vec2f_t * dst, arm_vec2f_t * src, const arm_vec2f_t * cst, unsigned int count)
+arm_result_t mulc_vec2f_neon (arm_vec2f_t * dst, arm_vec2f_t * src, const arm_vec2f_t * cst, unsigned int count)
 {
     NE10_XC_OPERATION_VEC2F_NEON
     (
-       n_dst = vmulq_f32( n_src , n_cst );
-       ,
-       n_tmp_src = vmul_f32( n_tmp_src, n_tmp_cst );
+        n_dst = vmulq_f32 (n_src , n_cst);
+        ,
+        n_tmp_src = vmul_f32 (n_tmp_src, n_tmp_cst);
     );
 }
 
-arm_result_t mulc_vec3f_neon(arm_vec3f_t * dst, arm_vec3f_t * src, const arm_vec3f_t * cst, unsigned int count)
+arm_result_t mulc_vec3f_neon (arm_vec3f_t * dst, arm_vec3f_t * src, const arm_vec3f_t * cst, unsigned int count)
 {
     NE10_XC_OPERATION_VEC3F_NEON
     (
-        n_dst1 = vmulq_f32( n_src1 , n_cst1 );
-        n_dst2 = vmulq_f32( n_src2 , n_cst2 );
-        n_dst3 = vmulq_f32( n_src3 , n_cst3 );
+        n_dst1 = vmulq_f32 (n_src1 , n_cst1);
+        n_dst2 = vmulq_f32 (n_src2 , n_cst2);
+        n_dst3 = vmulq_f32 (n_src3 , n_cst3);
         ,
-        n_tmp_src.val[0] = vmul_f32( n_tmp_src.val[0], n_tmp_cst.val[0] );
-        n_tmp_src.val[1] = vmul_f32( n_tmp_src.val[1], n_tmp_cst.val[1] );
-        n_tmp_src.val[2] = vmul_f32( n_tmp_src.val[2], n_tmp_cst.val[2] );
-     );
+        n_tmp_src.val[0] = vmul_f32 (n_tmp_src.val[0], n_tmp_cst.val[0]);
+        n_tmp_src.val[1] = vmul_f32 (n_tmp_src.val[1], n_tmp_cst.val[1]);
+        n_tmp_src.val[2] = vmul_f32 (n_tmp_src.val[2], n_tmp_cst.val[2]);
+    );
 }
 
-arm_result_t mulc_vec4f_neon(arm_vec4f_t * dst, arm_vec4f_t * src, const arm_vec4f_t * cst, unsigned int count)
+arm_result_t mulc_vec4f_neon (arm_vec4f_t * dst, arm_vec4f_t * src, const arm_vec4f_t * cst, unsigned int count)
 {
     NE10_XC_OPERATION_VEC4F_NEON
     (
-        n_dst = vmulq_f32( n_src , n_cst );
+        n_dst = vmulq_f32 (n_src , n_cst);
     );
 }

@@ -24,27 +24,27 @@
 
 #include <assert.h>
 
-arm_result_t detmat_2x2f_c(arm_float_t * dst, arm_mat2x2f_t * src, unsigned int count)
+arm_result_t detmat_2x2f_c (arm_float_t * dst, arm_mat2x2f_t * src, unsigned int count)
 {
-   NE10_DETMAT_OPERATION_X_C
-   (
-     dst[ itr ] = DET2x2( &src[ itr ] );
-   );
+    NE10_DETMAT_OPERATION_X_C
+    (
+        dst[ itr ] = DET2x2 (&src[ itr ]);
+    );
 }
 
-arm_result_t detmat_3x3f_c(arm_float_t * dst, arm_mat3x3f_t * src, unsigned int count)
+arm_result_t detmat_3x3f_c (arm_float_t * dst, arm_mat3x3f_t * src, unsigned int count)
 {
-   NE10_DETMAT_OPERATION_X_C
-   (
-     dst[ itr ] = DET3x3( &(src[ itr ]) );
+    NE10_DETMAT_OPERATION_X_C
+    (
+        dst[ itr ] = DET3x3 (& (src[ itr ]));
 
-   );
+    );
 }
 
-arm_result_t detmat_4x4f_c(arm_float_t * dst, arm_mat4x4f_t * src, unsigned int count)
+arm_result_t detmat_4x4f_c (arm_float_t * dst, arm_mat4x4f_t * src, unsigned int count)
 {
-   NE10_DETMAT_OPERATION_X_C
-   (
-     dst[ itr ] = DET4x4( &src[ itr ] );
-   );
+    NE10_DETMAT_OPERATION_X_C
+    (
+        dst[ itr ] = DET4x4 (&src[ itr ]);
+    );
 }

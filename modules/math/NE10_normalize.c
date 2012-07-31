@@ -25,50 +25,50 @@
 
 #include <math.h>
 
-arm_result_t normalize_vec2f_c(arm_vec2f_t * dst, arm_vec2f_t * src, unsigned int count)
+arm_result_t normalize_vec2f_c (arm_vec2f_t * dst, arm_vec2f_t * src, unsigned int count)
 {
-  float len;
+    float len;
 
-  NE10_LEN_OPERATION_X_C
-  (
-    len = sqrt( src[ itr ].x * src[ itr ].x +
-                src[ itr ].y * src[ itr ].y ) ;
+    NE10_LEN_OPERATION_X_C
+    (
+        len = sqrt (src[ itr ].x * src[ itr ].x +
+                    src[ itr ].y * src[ itr ].y) ;
 
-    dst[ itr ].x = src[ itr ].x / len;
-    dst[ itr ].y = src[ itr ].y / len;
-  );
+        dst[ itr ].x = src[ itr ].x / len;
+        dst[ itr ].y = src[ itr ].y / len;
+    );
 }
 
-arm_result_t normalize_vec3f_c(arm_vec3f_t * dst, arm_vec3f_t * src, unsigned int count)
+arm_result_t normalize_vec3f_c (arm_vec3f_t * dst, arm_vec3f_t * src, unsigned int count)
 {
-  float len;
+    float len;
 
-  NE10_LEN_OPERATION_X_C
-  (
-    len = sqrt( src[ itr ].x * src[ itr ].x +
-                src[ itr ].y * src[ itr ].y +
-                src[ itr ].z * src[ itr ].z );
+    NE10_LEN_OPERATION_X_C
+    (
+        len = sqrt (src[ itr ].x * src[ itr ].x +
+                    src[ itr ].y * src[ itr ].y +
+                    src[ itr ].z * src[ itr ].z);
 
-    dst[ itr ].x = src[ itr ].x / len;
-    dst[ itr ].y = src[ itr ].y / len;
-    dst[ itr ].z = src[ itr ].z / len;
-  );
+        dst[ itr ].x = src[ itr ].x / len;
+        dst[ itr ].y = src[ itr ].y / len;
+        dst[ itr ].z = src[ itr ].z / len;
+    );
 }
 
-arm_result_t normalize_vec4f_c(arm_vec4f_t * dst, arm_vec4f_t * src, unsigned int count)
+arm_result_t normalize_vec4f_c (arm_vec4f_t * dst, arm_vec4f_t * src, unsigned int count)
 {
-  float len;
+    float len;
 
-  NE10_LEN_OPERATION_X_C
-  (
-    len = sqrt( src[ itr ].x * src[ itr ].x +
-                src[ itr ].y * src[ itr ].y +
-                src[ itr ].z * src[ itr ].z +
-                src[ itr ].w * src[ itr ].w );
+    NE10_LEN_OPERATION_X_C
+    (
+        len = sqrt (src[ itr ].x * src[ itr ].x +
+                    src[ itr ].y * src[ itr ].y +
+                    src[ itr ].z * src[ itr ].z +
+                    src[ itr ].w * src[ itr ].w);
 
-    dst[ itr ].x = src[ itr ].x / len;
-    dst[ itr ].y = src[ itr ].y / len;
-    dst[ itr ].z = src[ itr ].z / len;
-    dst[ itr ].w = src[ itr ].w / len;
-  );
+        dst[ itr ].x = src[ itr ].x / len;
+        dst[ itr ].y = src[ itr ].y / len;
+        dst[ itr ].z = src[ itr ].z / len;
+        dst[ itr ].w = src[ itr ].w / len;
+    );
 }

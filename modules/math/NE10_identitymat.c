@@ -21,63 +21,63 @@
 #include "NE10_types.h"
 #include "macros.h"
 
-arm_result_t identitymat_2x2f_c(arm_mat2x2f_t * dst, unsigned int count)
+arm_result_t identitymat_2x2f_c (arm_mat2x2f_t * dst, unsigned int count)
 {
-  arm_mat2x2f_t *src = dst; // dummy placeholder
+    arm_mat2x2f_t *src = dst; // dummy placeholder
 
-  NE10_DETMAT_OPERATION_X_C
-  (
-      dst[ itr ].c1.r1 =  1.0f;
-      dst[ itr ].c1.r2 =  0.0f;
-      dst[ itr ].c2.r1 =  0.0f;
-      dst[ itr ].c2.r2 =  1.0f;
-  );
+    NE10_DETMAT_OPERATION_X_C
+    (
+        dst[ itr ].c1.r1 =  1.0f;
+        dst[ itr ].c1.r2 =  0.0f;
+        dst[ itr ].c2.r1 =  0.0f;
+        dst[ itr ].c2.r2 =  1.0f;
+    );
 }
 
-arm_result_t identitymat_3x3f_c(arm_mat3x3f_t * dst, unsigned int count)
+arm_result_t identitymat_3x3f_c (arm_mat3x3f_t * dst, unsigned int count)
 {
-  arm_mat3x3f_t *src = dst; // dummy placeholder
+    arm_mat3x3f_t *src = dst; // dummy placeholder
 
-  NE10_DETMAT_OPERATION_X_C
-  (
-    dst[ itr ].c1.r1 =  1.0f;
-    dst[ itr ].c1.r2 =  0.0f;
-    dst[ itr ].c1.r3 =  0.0f;
+    NE10_DETMAT_OPERATION_X_C
+    (
+        dst[ itr ].c1.r1 =  1.0f;
+        dst[ itr ].c1.r2 =  0.0f;
+        dst[ itr ].c1.r3 =  0.0f;
 
-    dst[ itr ].c2.r1 =  0.0f;
-    dst[ itr ].c2.r2 =  1.0f;
-    dst[ itr ].c2.r3 =  0.0f;
+        dst[ itr ].c2.r1 =  0.0f;
+        dst[ itr ].c2.r2 =  1.0f;
+        dst[ itr ].c2.r3 =  0.0f;
 
-    dst[ itr ].c3.r1 =  0.0f;
-    dst[ itr ].c3.r2 =  0.0f;
-    dst[ itr ].c3.r3 =  1.0f;
-  );
+        dst[ itr ].c3.r1 =  0.0f;
+        dst[ itr ].c3.r2 =  0.0f;
+        dst[ itr ].c3.r3 =  1.0f;
+    );
 }
 
-arm_result_t identitymat_4x4f_c(arm_mat4x4f_t * dst, unsigned int count)
+arm_result_t identitymat_4x4f_c (arm_mat4x4f_t * dst, unsigned int count)
 {
-  arm_mat4x4f_t *src = dst; // dummy placeholder
+    arm_mat4x4f_t *src = dst; // dummy placeholder
 
-  NE10_DETMAT_OPERATION_X_C
-  (
-    dst[ itr ].c1.r1 =  1.0f;
-    dst[ itr ].c1.r2 =  0.0f;
-    dst[ itr ].c1.r3 =  0.0f;
-    dst[ itr ].c1.r4 =  0.0f;
+    NE10_DETMAT_OPERATION_X_C
+    (
+        dst[ itr ].c1.r1 =  1.0f;
+        dst[ itr ].c1.r2 =  0.0f;
+        dst[ itr ].c1.r3 =  0.0f;
+        dst[ itr ].c1.r4 =  0.0f;
 
-    dst[ itr ].c2.r1 =  0.0f;
-    dst[ itr ].c2.r2 =  1.0f;
-    dst[ itr ].c2.r3 =  0.0f;
-    dst[ itr ].c2.r4 =  0.0f;
+        dst[ itr ].c2.r1 =  0.0f;
+        dst[ itr ].c2.r2 =  1.0f;
+        dst[ itr ].c2.r3 =  0.0f;
+        dst[ itr ].c2.r4 =  0.0f;
 
-    dst[ itr ].c3.r1 =  0.0f;
-    dst[ itr ].c3.r2 =  0.0f;
-    dst[ itr ].c3.r3 =  1.0f;
-    dst[ itr ].c3.r4 =  0.0f;
+        dst[ itr ].c3.r1 =  0.0f;
+        dst[ itr ].c3.r2 =  0.0f;
+        dst[ itr ].c3.r3 =  1.0f;
+        dst[ itr ].c3.r4 =  0.0f;
 
-    dst[ itr ].c4.r1 =  0.0f;
-    dst[ itr ].c4.r2 =  0.0f;
-    dst[ itr ].c4.r3 =  0.0f;
-    dst[ itr ].c4.r4 =  1.0f;
-  );
+        dst[ itr ].c4.r1 =  0.0f;
+        dst[ itr ].c4.r2 =  0.0f;
+        dst[ itr ].c4.r3 =  0.0f;
+        dst[ itr ].c4.r4 =  1.0f;
+    );
 }

@@ -25,44 +25,44 @@
 #include <arm_neon.h>
 
 
-arm_result_t mlac_float_neon(arm_float_t * dst, arm_float_t * acc, arm_float_t * src, const arm_float_t cst, unsigned int count)
+arm_result_t mlac_float_neon (arm_float_t * dst, arm_float_t * acc, arm_float_t * src, const arm_float_t cst, unsigned int count)
 {
     NE10_MLAC_OPERATION_FLOAT_NEON
     (
-        n_dst = vmlaq_f32( n_acc, n_src, n_cst );
+        n_dst = vmlaq_f32 (n_acc, n_src, n_cst);
         ,
-        n_tmp_src = vmla_f32( n_tmp_acc, n_tmp_src, n_tmp_cst );
+        n_tmp_src = vmla_f32 (n_tmp_acc, n_tmp_src, n_tmp_cst);
     );
 }
 
-arm_result_t mlac_vec2f_neon(arm_vec2f_t * dst, arm_vec2f_t * acc, arm_vec2f_t * src, const arm_vec2f_t * cst, unsigned int count)
+arm_result_t mlac_vec2f_neon (arm_vec2f_t * dst, arm_vec2f_t * acc, arm_vec2f_t * src, const arm_vec2f_t * cst, unsigned int count)
 {
     NE10_MLAC_OPERATION_VEC2F_NEON
     (
-       n_dst = vmlaq_f32( n_acc, n_src , n_cst );
-       ,
-       n_tmp_src = vmla_f32( n_tmp_acc, n_tmp_src, n_tmp_cst );
+        n_dst = vmlaq_f32 (n_acc, n_src , n_cst);
+        ,
+        n_tmp_src = vmla_f32 (n_tmp_acc, n_tmp_src, n_tmp_cst);
     );
 }
 
-arm_result_t mlac_vec3f_neon(arm_vec3f_t * dst, arm_vec3f_t * acc, arm_vec3f_t * src, const arm_vec3f_t * cst, unsigned int count)
+arm_result_t mlac_vec3f_neon (arm_vec3f_t * dst, arm_vec3f_t * acc, arm_vec3f_t * src, const arm_vec3f_t * cst, unsigned int count)
 {
     NE10_MLAC_OPERATION_VEC3F_NEON
     (
-        n_dst1 = vmlaq_f32( n_acc1, n_src1 , n_cst1 );
-        n_dst2 = vmlaq_f32( n_acc2, n_src2 , n_cst2 );
-        n_dst3 = vmlaq_f32( n_acc3, n_src3 , n_cst3 );
+        n_dst1 = vmlaq_f32 (n_acc1, n_src1 , n_cst1);
+        n_dst2 = vmlaq_f32 (n_acc2, n_src2 , n_cst2);
+        n_dst3 = vmlaq_f32 (n_acc3, n_src3 , n_cst3);
         ,
-        n_tmp_src.val[0] = vmla_f32( n_tmp_acc.val[0], n_tmp_src.val[0], n_tmp_cst.val[0] );  /* the X lane */
-        n_tmp_src.val[1] = vmla_f32( n_tmp_acc.val[1], n_tmp_src.val[1], n_tmp_cst.val[1] );  /* the Y lane */
-        n_tmp_src.val[2] = vmla_f32( n_tmp_acc.val[2], n_tmp_src.val[2], n_tmp_cst.val[2] );  /* the Z lane */
-     );
+        n_tmp_src.val[0] = vmla_f32 (n_tmp_acc.val[0], n_tmp_src.val[0], n_tmp_cst.val[0]);   /* the X lane */
+        n_tmp_src.val[1] = vmla_f32 (n_tmp_acc.val[1], n_tmp_src.val[1], n_tmp_cst.val[1]);   /* the Y lane */
+        n_tmp_src.val[2] = vmla_f32 (n_tmp_acc.val[2], n_tmp_src.val[2], n_tmp_cst.val[2]);   /* the Z lane */
+    );
 }
 
-arm_result_t mlac_vec4f_neon(arm_vec4f_t * dst, arm_vec4f_t * acc, arm_vec4f_t * src, const arm_vec4f_t * cst, unsigned int count)
+arm_result_t mlac_vec4f_neon (arm_vec4f_t * dst, arm_vec4f_t * acc, arm_vec4f_t * src, const arm_vec4f_t * cst, unsigned int count)
 {
     NE10_MLAC_OPERATION_VEC4F_NEON
     (
-        n_dst = vmlaq_f32( n_acc, n_src , n_cst );
+        n_dst = vmlaq_f32 (n_acc, n_src , n_cst);
     );
 }

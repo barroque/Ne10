@@ -35,25 +35,25 @@ arm_result_t NE10_init()
     size_t  bytes = 0;                     // Numbers of bytes read from the file
     int     i = 0;                         // Temporary loop counter
 
-    memset( cpuinfo, 0, CPUINFO_BUFFER_SIZE );
-    infofile = fopen( "/proc/cpuinfo", "r" );
-    bytes    = fread( cpuinfo, 1, sizeof(cpuinfo), infofile );
-    fclose( infofile );
+    memset (cpuinfo, 0, CPUINFO_BUFFER_SIZE);
+    infofile = fopen ("/proc/cpuinfo", "r");
+    bytes    = fread (cpuinfo, 1, sizeof (cpuinfo), infofile);
+    fclose (infofile);
 
-    if( 0 == bytes || CPUINFO_BUFFER_SIZE == bytes )
+    if (0 == bytes || CPUINFO_BUFFER_SIZE == bytes)
     {
-        fprintf( stderr, "ERROR: Couldn't read the file \"/proc/cpuinfo\". NE10_init() failed.\n");
+        fprintf (stderr, "ERROR: Couldn't read the file \"/proc/cpuinfo\". NE10_init() failed.\n");
         return NE10_ERR;
     }
 
-    while( '\0' != cpuinfo[i] ) cpuinfo[i++] = (char)tolower(cpuinfo[i]);
+    while ('\0' != cpuinfo[i]) cpuinfo[i++] = (char) tolower (cpuinfo[i]);
 
-    if ( 0 != strstr(cpuinfo, "neon") )
+    if (0 != strstr (cpuinfo, "neon"))
     {
-       is_NEON_available = NE10_OK;
+        is_NEON_available = NE10_OK;
     }
 
 #if defined (NE10_ENABLE_MATH)
-    NE10_init_math(is_NEON_available);
+    NE10_init_math (is_NEON_available);
 #endif
 }

@@ -23,32 +23,32 @@
 
 #include <assert.h>
 
-arm_result_t dot_vec2f_c(arm_float_t * dst, arm_vec2f_t * src1,  arm_vec2f_t * src2, unsigned int count)
+arm_result_t dot_vec2f_c (arm_float_t * dst, arm_vec2f_t * src1,  arm_vec2f_t * src2, unsigned int count)
 {
-  NE10_DOT_OPERATION_X_C
-  (
-    dst[ itr ] =       src1[ itr ].x * src2[ itr ].x +
-                       src1[ itr ].y * src2[ itr ].y   ;
-  );
+    NE10_DOT_OPERATION_X_C
+    (
+        dst[ itr ] =       src1[ itr ].x * src2[ itr ].x +
+                           src1[ itr ].y * src2[ itr ].y   ;
+    );
 }
 
-arm_result_t dot_vec3f_c(arm_float_t * dst, arm_vec3f_t * src1, arm_vec3f_t * src2, unsigned int count)
+arm_result_t dot_vec3f_c (arm_float_t * dst, arm_vec3f_t * src1, arm_vec3f_t * src2, unsigned int count)
 {
-  NE10_DOT_OPERATION_X_C
-  (
-    dst[ itr ] =       src1[ itr ].x * src2[ itr ].x +
-                       src1[ itr ].y * src2[ itr ].y +
-                       src1[ itr ].z * src2[ itr ].z  ;
-  );
+    NE10_DOT_OPERATION_X_C
+    (
+        dst[ itr ] =       src1[ itr ].x * src2[ itr ].x +
+                           src1[ itr ].y * src2[ itr ].y +
+                           src1[ itr ].z * src2[ itr ].z  ;
+    );
 }
 
-arm_result_t dot_vec4f_c(arm_float_t * dst, arm_vec4f_t * src1, arm_vec4f_t * src2, unsigned int count)
+arm_result_t dot_vec4f_c (arm_float_t * dst, arm_vec4f_t * src1, arm_vec4f_t * src2, unsigned int count)
 {
-  NE10_DOT_OPERATION_X_C
-  (
-    dst[ itr ] =       src1[ itr ].x * src2[ itr ].x +
-                       src1[ itr ].y * src2[ itr ].y +
-                       src1[ itr ].z * src2[ itr ].z +
-                       src1[ itr ].w * src2[ itr ].w  ;
-  );
+    NE10_DOT_OPERATION_X_C
+    (
+        dst[ itr ] =       src1[ itr ].x * src2[ itr ].x +
+                           src1[ itr ].y * src2[ itr ].y +
+                           src1[ itr ].z * src2[ itr ].z +
+                           src1[ itr ].w * src2[ itr ].w  ;
+    );
 }

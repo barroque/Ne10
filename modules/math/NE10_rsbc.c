@@ -23,40 +23,40 @@
 
 #include <assert.h>
 
-arm_result_t rsbc_float_c(arm_float_t * dst, arm_float_t * src, const arm_float_t cst, unsigned int count)
+arm_result_t rsbc_float_c (arm_float_t * dst, arm_float_t * src, const arm_float_t cst, unsigned int count)
 {
-  NE10_XC_OPERATION_X_C
-  (
-    dst[ itr ] = cst - src[ itr ];
-  );
+    NE10_XC_OPERATION_X_C
+    (
+        dst[ itr ] = cst - src[ itr ];
+    );
 }
 
-arm_result_t rsbc_vec2f_c(arm_vec2f_t * dst, arm_vec2f_t * src, const arm_vec2f_t * cst, unsigned int count)
+arm_result_t rsbc_vec2f_c (arm_vec2f_t * dst, arm_vec2f_t * src, const arm_vec2f_t * cst, unsigned int count)
 {
-  NE10_XC_OPERATION_X_C
-  (
-    dst[ itr ].x = cst->x - src[ itr ].x;
-    dst[ itr ].y = cst->y - src[ itr ].y;
-  );
+    NE10_XC_OPERATION_X_C
+    (
+        dst[ itr ].x = cst->x - src[ itr ].x;
+        dst[ itr ].y = cst->y - src[ itr ].y;
+    );
 }
 
-arm_result_t rsbc_vec3f_c(arm_vec3f_t * dst, arm_vec3f_t * src, const arm_vec3f_t * cst, unsigned int count)
+arm_result_t rsbc_vec3f_c (arm_vec3f_t * dst, arm_vec3f_t * src, const arm_vec3f_t * cst, unsigned int count)
 {
-  NE10_XC_OPERATION_X_C
-  (
-    dst[ itr ].x = cst->x - src[ itr ].x;
-    dst[ itr ].y = cst->y - src[ itr ].y;
-    dst[ itr ].z = cst->z - src[ itr ].z;
-  );
+    NE10_XC_OPERATION_X_C
+    (
+        dst[ itr ].x = cst->x - src[ itr ].x;
+        dst[ itr ].y = cst->y - src[ itr ].y;
+        dst[ itr ].z = cst->z - src[ itr ].z;
+    );
 }
 
-arm_result_t rsbc_vec4f_c(arm_vec4f_t * dst, arm_vec4f_t * src, const arm_vec4f_t * cst, unsigned int count)
+arm_result_t rsbc_vec4f_c (arm_vec4f_t * dst, arm_vec4f_t * src, const arm_vec4f_t * cst, unsigned int count)
 {
-  NE10_XC_OPERATION_X_C
-  (
-    dst[ itr ].x = cst->x - src[ itr ].x;
-    dst[ itr ].y = cst->y - src[ itr ].y;
-    dst[ itr ].z = cst->z - src[ itr ].z;
-    dst[ itr ].w = cst->w - src[ itr ].w;
-  );
+    NE10_XC_OPERATION_X_C
+    (
+        dst[ itr ].x = cst->x - src[ itr ].x;
+        dst[ itr ].y = cst->y - src[ itr ].y;
+        dst[ itr ].z = cst->z - src[ itr ].z;
+        dst[ itr ].w = cst->w - src[ itr ].w;
+    );
 }

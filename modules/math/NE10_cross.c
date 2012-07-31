@@ -23,12 +23,12 @@
 
 #include <assert.h>
 
-arm_result_t cross_vec3f_c(arm_vec3f_t * dst, arm_vec3f_t * src1, arm_vec3f_t * src2, unsigned int count)
+arm_result_t cross_vec3f_c (arm_vec3f_t * dst, arm_vec3f_t * src1, arm_vec3f_t * src2, unsigned int count)
 {
-  NE10_X_OPERATION_FLOAT_C
-  (
-    dst[ itr ].x = (src1[ itr ].y * src2[ itr ].z) - (src1[ itr ].z * src2[ itr ].y);
-    dst[ itr ].y = (src1[ itr ].z * src2[ itr ].x) - (src1[ itr ].x * src2[ itr ].z);
-    dst[ itr ].z = (src1[ itr ].x * src2[ itr ].y) - (src1[ itr ].y * src2[ itr ].x);
-  );
+    NE10_X_OPERATION_FLOAT_C
+    (
+        dst[ itr ].x = (src1[ itr ].y * src2[ itr ].z) - (src1[ itr ].z * src2[ itr ].y);
+        dst[ itr ].y = (src1[ itr ].z * src2[ itr ].x) - (src1[ itr ].x * src2[ itr ].z);
+        dst[ itr ].z = (src1[ itr ].x * src2[ itr ].y) - (src1[ itr ].y * src2[ itr ].x);
+    );
 }

@@ -25,41 +25,41 @@
 
 #include <math.h>
 
-arm_result_t abs_float_c(arm_float_t * dst, arm_float_t * src, unsigned int count)
+arm_result_t abs_float_c (arm_float_t * dst, arm_float_t * src, unsigned int count)
 {
-  NE10_ABS_OPERATION_X_C
-  (
-    dst[itr] = fabs( src[itr] );
-  );
+    NE10_ABS_OPERATION_X_C
+    (
+        dst[itr] = fabs (src[itr]);
+    );
 }
 
-arm_result_t abs_vec2f_c(arm_vec2f_t * dst, arm_vec2f_t * src, unsigned int count)
+arm_result_t abs_vec2f_c (arm_vec2f_t * dst, arm_vec2f_t * src, unsigned int count)
 {
-  NE10_ABS_OPERATION_X_C
-  (
-    dst[ itr ].x = fabs( src[ itr ].x );
-    dst[ itr ].y = fabs( src[ itr ].y );
-  );
+    NE10_ABS_OPERATION_X_C
+    (
+        dst[ itr ].x = fabs (src[ itr ].x);
+        dst[ itr ].y = fabs (src[ itr ].y);
+    );
 }
 
-arm_result_t abs_vec3f_c(arm_vec3f_t * dst, arm_vec3f_t * src, unsigned int count)
+arm_result_t abs_vec3f_c (arm_vec3f_t * dst, arm_vec3f_t * src, unsigned int count)
 {
-  NE10_ABS_OPERATION_X_C
-  (
-    dst[ itr ].x = fabs( src[ itr ].x );
-    dst[ itr ].y = fabs( src[ itr ].y );
-    dst[ itr ].z = fabs( src[ itr ].z );
-  );
+    NE10_ABS_OPERATION_X_C
+    (
+        dst[ itr ].x = fabs (src[ itr ].x);
+        dst[ itr ].y = fabs (src[ itr ].y);
+        dst[ itr ].z = fabs (src[ itr ].z);
+    );
 }
 
-arm_result_t abs_vec4f_c(arm_vec4f_t * dst, arm_vec4f_t * src, unsigned int count)
+arm_result_t abs_vec4f_c (arm_vec4f_t * dst, arm_vec4f_t * src, unsigned int count)
 {
-  NE10_ABS_OPERATION_X_C
-  (
-    dst[ itr ].x = fabs( src[ itr ].x );
-    dst[ itr ].y = fabs( src[ itr ].y );
-    dst[ itr ].z = fabs( src[ itr ].z );
-    dst[ itr ].w = fabs( src[ itr ].w );
-  );
+    NE10_ABS_OPERATION_X_C
+    (
+        dst[ itr ].x = fabs (src[ itr ].x);
+        dst[ itr ].y = fabs (src[ itr ].y);
+        dst[ itr ].z = fabs (src[ itr ].z);
+        dst[ itr ].w = fabs (src[ itr ].w);
+    );
 }
 
