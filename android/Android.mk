@@ -82,7 +82,7 @@ ne10_source_files := \
 include $(CLEAR_VARS)
 
 LOCAL_C_INCLUDES :=     $(LOCAL_PATH)/common/ \
-                        $(LOCAL_PATH)/inc 
+                        $(LOCAL_PATH)/inc
 
 LOCAL_SRC_FILES :=  \
     $(ne10_source_files)
@@ -109,7 +109,7 @@ LOCAL_CFLAGS := -D_ARM_ASSEM_
 LOCAL_ARM_MODE := arm
 
 LOCAL_C_INCLUDES :=     $(LOCAL_PATH)/common/ \
-                        $(LOCAL_PATH)/inc 
+                        $(LOCAL_PATH)/inc
 
 LOCAL_SRC_FILES :=  \
     $(ne10_source_files)
