@@ -125,7 +125,7 @@
 
 // Macros used in C implementations
 #define NE10_TEMPLATE_XC_OPERATION_X_C(checkPointer, loopCode) { \
-   arm_result_t res = NE10_OK; \
+   ne10_result_t res = NE10_OK; \
    unsigned int itr = 0; \
    checkPointer; \
    for ( itr = 0; itr < count; itr++ ) \
@@ -174,7 +174,7 @@
      }
 
 #define NE10_DstSrcCst_OPERATION_FLOAT_NEON(checkPointer, loopCode1, loopCode2) { \
-   arm_result_t res = NE10_OK; \
+   ne10_result_t res = NE10_OK; \
    float32x4_t n_src; \
    float32x4_t n_dst; \
    checkPointer; \
@@ -211,7 +211,7 @@
     }
 
 #define NE10_DstSrcCst_OPERATION_VEC2F_NEON(checkPointer, loopCode1, loopCode2) { \
-   arm_result_t res = NE10_OK; \
+   ne10_result_t res = NE10_OK; \
    float32x4_t n_cst = { cst->x, cst->y, cst->x, cst->y }; \
    float32x4_t n_src; \
    float32x4_t n_dst; \
@@ -230,18 +230,18 @@
 
 #define NE10_DstSrcCst_MAINLOOP_VEC3F_NEON(loopCode) { \
      n_src1 = vld1q_f32( (float32_t*)src ); \
-     src = ((void*)src)+(4*sizeof(arm_float_t)); \
+     src = ((void*)src)+(4*sizeof(ne10_float32_t)); \
      n_src2 = vld1q_f32( (float32_t*)src ); \
-     src = ((void*)src)+(4*sizeof(arm_float_t)); \
+     src = ((void*)src)+(4*sizeof(ne10_float32_t)); \
      n_src3 = vld1q_f32( (float32_t*)src ); \
-     src = ((void*)src)+(4*sizeof(arm_float_t)); \
+     src = ((void*)src)+(4*sizeof(ne10_float32_t)); \
      loopCode; /* The main loop iterates through three 3D vectors each time */ \
      vst1q_f32 ( (float32_t*)dst , n_dst1 ); \
-     dst = ((void*)dst)+(4*sizeof(arm_float_t)); \
+     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
      vst1q_f32 ( (float32_t*)dst , n_dst2 ); \
-     dst = ((void*)dst)+(4*sizeof(arm_float_t)); \
+     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
      vst1q_f32 ( (float32_t*)dst , n_dst3 ); \
-     dst = ((void*)dst)+(4*sizeof(arm_float_t)); \
+     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
   }
 
 #define NE10_DstSrcCst_SECONDLOOP_VEC3F_NEON(loopCode) { \
@@ -257,7 +257,7 @@
      }
 
 #define NE10_DstSrcCst_OPERATION_VEC3F_NEON(checkPointer, loopCode1, loopCode2) { \
-   arm_result_t res = NE10_OK; \
+   ne10_result_t res = NE10_OK; \
    float32x4_t n_cst1 = { cst->x, cst->y, cst->z, cst->x }; \
    float32x4_t n_cst2 = { cst->y, cst->z, cst->x, cst->y }; \
    float32x4_t n_cst3 = { cst->z, cst->x, cst->y, cst->z }; \
@@ -291,7 +291,7 @@
    }
 
 #define NE10_DstSrcCst_OPERATION_VEC4F_NEON(checkPointer, loopCode) { \
-   arm_result_t res = NE10_OK; \
+   ne10_result_t res = NE10_OK; \
    float32x4_t n_cst = { cst->x, cst->y, cst->z, cst->w }; \
    float32x4_t n_src; \
    float32x4_t n_dst; \
@@ -365,24 +365,24 @@
 
 #define NE10_DstAccSrcCst_MAINLOOP_VEC3F_NEON(loopCode) { \
      n_acc1 = vld1q_f32( (float32_t*)acc ); /* Load accumulator values */ \
-     acc = ((void*)acc)+(4*sizeof(arm_float_t)); \
+     acc = ((void*)acc)+(4*sizeof(ne10_float32_t)); \
      n_acc2 = vld1q_f32( (float32_t*)acc ); \
-     acc = ((void*)acc)+(4*sizeof(arm_float_t)); \
+     acc = ((void*)acc)+(4*sizeof(ne10_float32_t)); \
      n_acc3 = vld1q_f32( (float32_t*)acc ); \
-     acc = ((void*)acc)+(4*sizeof(arm_float_t)); \
+     acc = ((void*)acc)+(4*sizeof(ne10_float32_t)); \
      n_src1 = vld1q_f32( (float32_t*)src ); /* Load source values */ \
-     src = ((void*)src)+(4*sizeof(arm_float_t)); \
+     src = ((void*)src)+(4*sizeof(ne10_float32_t)); \
      n_src2 = vld1q_f32( (float32_t*)src ); \
-     src = ((void*)src)+(4*sizeof(arm_float_t)); \
+     src = ((void*)src)+(4*sizeof(ne10_float32_t)); \
      n_src3 = vld1q_f32( (float32_t*)src ); \
-     src = ((void*)src)+(4*sizeof(arm_float_t)); \
+     src = ((void*)src)+(4*sizeof(ne10_float32_t)); \
      loopCode; /* The main loop iterates through three 3D vectors each time */ \
      vst1q_f32 ( (float32_t*)dst , n_dst1 ); /* Store the results back into the memory */ \
-     dst = ((void*)dst)+(4*sizeof(arm_float_t)); \
+     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
      vst1q_f32 ( (float32_t*)dst , n_dst2 ); \
-     dst = ((void*)dst)+(4*sizeof(arm_float_t)); \
+     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
      vst1q_f32 ( (float32_t*)dst , n_dst3 ); \
-     dst = ((void*)dst)+(4*sizeof(arm_float_t)); \
+     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
   }
 
 #define NE10_DstAccSrcCst_SECONDLOOP_VEC3F_NEON(loopCode) { \
@@ -450,7 +450,7 @@
      }
 
 #define NE10_DstCst_OPERATION_FLOAT_NEON(checkPointer, loopCode1, loopCode2) { \
-   arm_result_t res = NE10_OK; \
+   ne10_result_t res = NE10_OK; \
    checkPointer; \
    int dif = 0; \
    dif = count % 4; /* either 0 or one of 1,2,3; in the latter cases the second path is taken */ \
@@ -482,7 +482,7 @@
     }
 
 #define NE10_DstCst_OPERATION_VEC2F_NEON(checkPointer, loopCode1, loopCode2) { \
-   arm_result_t res = NE10_OK; \
+   ne10_result_t res = NE10_OK; \
    float32x4_t n_cst = { cst->x, cst->y, cst->x, cst->y }; \
    checkPointer; \
    int dif = count % 2; \
@@ -500,11 +500,11 @@
 #define NE10_DstCst_MAINLOOP_VEC3F_NEON(loopCode) { \
      loopCode; /* The main loop iterates through three 3D vectors each time */ \
      vst1q_f32 ( (float32_t*)dst , n_cst1 ); \
-     dst = ((void*)dst)+(4*sizeof(arm_float_t)); \
+     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
      vst1q_f32 ( (float32_t*)dst , n_cst2 ); \
-     dst = ((void*)dst)+(4*sizeof(arm_float_t)); \
+     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
      vst1q_f32 ( (float32_t*)dst , n_cst3 ); \
-     dst = ((void*)dst)+(4*sizeof(arm_float_t)); \
+     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
   }
 
 #define NE10_DstCst_SECONDLOOP_VEC3F_NEON(loopCode) { \
@@ -519,7 +519,7 @@
      }
 
 #define NE10_DstCst_OPERATION_VEC3F_NEON(checkPointer, loopCode1, loopCode2) { \
-   arm_result_t res = NE10_OK; \
+   ne10_result_t res = NE10_OK; \
    float32x4_t n_cst1 = { cst->x, cst->y, cst->z, cst->x }; \
    float32x4_t n_cst2 = { cst->y, cst->z, cst->x, cst->y }; \
    float32x4_t n_cst3 = { cst->z, cst->x, cst->y, cst->z }; \
@@ -546,7 +546,7 @@
    }
 
 #define NE10_DstCst_OPERATION_VEC4F_NEON(checkPointer, loopCode) { \
-   arm_result_t res = NE10_OK; \
+   ne10_result_t res = NE10_OK; \
    float32x4_t n_cst = { cst->x, cst->y, cst->z, cst->w }; \
    checkPointer; \
    for (; count != 0; count --) { \
@@ -657,7 +657,7 @@
     }
 
 #define NE10_DstSrc_OPERATION_VEC2F_NEON(checkPointer, loopCode1, loopCode2) { \
-   arm_result_t res = NE10_OK; \
+   ne10_result_t res = NE10_OK; \
    float32x2x2_t n_src; \
    float32x2_t n_dst; \
    checkPointer; \
@@ -675,7 +675,7 @@
 
 #define NE10_DstSrc_MAINLOOP_VEC3F_NEON(loopCode) { \
      n_src = vld3q_f32( (float32_t*)src ); \
-     src = ((void*)src)+(12*sizeof(arm_float_t)); \
+     src = ((void*)src)+(12*sizeof(ne10_float32_t)); \
      loopCode; /* The main loop iterates through four 3D vectors each time */ \
      /* store the results and increment the destination pointer within the loopCode */ \
   }
@@ -686,7 +686,7 @@
      }
 
 #define NE10_DstSrc_OPERATION_VEC3F_NEON(checkPointer, loopCode1, loopCode2) { \
-   arm_result_t res = NE10_OK; \
+   ne10_result_t res = NE10_OK; \
    float32x4x3_t n_src; \
    float32x4_t n_dst; \
    checkPointer; \
@@ -716,7 +716,7 @@
    }
 
 #define NE10_DstSrc_OPERATION_VEC4F_NEON(checkPointer, loopCode) { \
-   arm_result_t res = NE10_OK; \
+   ne10_result_t res = NE10_OK; \
    float32x4_t n_src; \
    checkPointer; \
    for (; count != 0; count --) { \

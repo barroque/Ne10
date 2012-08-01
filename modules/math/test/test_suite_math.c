@@ -26,73 +26,73 @@
 #include "seatest.h"
 
 //function table
-arm_func_2args_t ftbl_2args[MAX_FUNC_COUNT];
-arm_func_3args_t ftbl_3args[MAX_FUNC_COUNT];
-arm_func_4args_t ftbl_4args[MAX_FUNC_COUNT];
-arm_func_5args_t ftbl_5args[MAX_FUNC_COUNT];
+ne10_func_2args_t ftbl_2args[MAX_FUNC_COUNT];
+ne10_func_3args_t ftbl_3args[MAX_FUNC_COUNT];
+ne10_func_4args_t ftbl_4args[MAX_FUNC_COUNT];
+ne10_func_5args_t ftbl_5args[MAX_FUNC_COUNT];
 
 
 //input and output
-arm_float_t * guarded_acc = NULL;
-arm_float_t * guarded_src1 = NULL;
-arm_float_t * guarded_src2 = NULL;
-arm_float_t * guarded_cst = NULL;
-arm_float_t * theacc = NULL;
-arm_float_t * thesrc1 = NULL;
-arm_float_t * thesrc2 = NULL;
-arm_float_t * thecst = NULL;
+ne10_float32_t * guarded_acc = NULL;
+ne10_float32_t * guarded_src1 = NULL;
+ne10_float32_t * guarded_src2 = NULL;
+ne10_float32_t * guarded_cst = NULL;
+ne10_float32_t * theacc = NULL;
+ne10_float32_t * thesrc1 = NULL;
+ne10_float32_t * thesrc2 = NULL;
+ne10_float32_t * thecst = NULL;
 
-arm_float_t * guarded_dst_c = NULL;
-arm_float_t * guarded_dst_neon = NULL;
-arm_float_t * thedst_c = NULL;
-arm_float_t * thedst_neon = NULL;
+ne10_float32_t * guarded_dst_c = NULL;
+ne10_float32_t * guarded_dst_neon = NULL;
+ne10_float32_t * thedst_c = NULL;
+ne10_float32_t * thedst_neon = NULL;
 
 #ifdef PERFORMANCE_TEST
-arm_float_t * perftest_guarded_acc = NULL;
-arm_float_t * perftest_guarded_src1 = NULL;
-arm_float_t * perftest_guarded_src2 = NULL;
-arm_float_t * perftest_guarded_cst = NULL;
-arm_float_t * perftest_theacc = NULL;
-arm_float_t * perftest_thesrc1 = NULL;
-arm_float_t * perftest_thesrc2 = NULL;
-arm_float_t * perftest_thecst = NULL;
+ne10_float32_t * perftest_guarded_acc = NULL;
+ne10_float32_t * perftest_guarded_src1 = NULL;
+ne10_float32_t * perftest_guarded_src2 = NULL;
+ne10_float32_t * perftest_guarded_cst = NULL;
+ne10_float32_t * perftest_theacc = NULL;
+ne10_float32_t * perftest_thesrc1 = NULL;
+ne10_float32_t * perftest_thesrc2 = NULL;
+ne10_float32_t * perftest_thecst = NULL;
 
-arm_float_t * perftest_thedst_c = NULL;
-arm_float_t * perftest_guarded_dst_c = NULL;
-arm_float_t * perftest_guarded_dst_neon = NULL;
-arm_float_t * perftest_thedst_neon = NULL;
-unsigned int perftest_length = 0;
+ne10_float32_t * perftest_thedst_c = NULL;
+ne10_float32_t * perftest_guarded_dst_c = NULL;
+ne10_float32_t * perftest_guarded_dst_neon = NULL;
+ne10_float32_t * perftest_thedst_neon = NULL;
+ne10_uint32_t perftest_length = 0;
 
-unsigned long time_c = 0;
-unsigned long time_neon = 0;
-unsigned long time_overhead = 0;
-float time_speedup = 0.0f;
+ne10_float64_t time_c = 0;
+ne10_float64_t time_neon = 0;
+ne10_float64_t time_overhead = 0;
+ne10_float32_t time_speedup = 0.0f;
 #endif
 
 void test_abs()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     /* init function table */
     memset (ftbl_3args, 0, sizeof (ftbl_3args));
-    ftbl_3args[ 0] = (arm_func_3args_t) abs_float_c;
-    ftbl_3args[ 1] = (arm_func_3args_t) abs_float_neon;
-    ftbl_3args[ 2] = (arm_func_3args_t) abs_vec2f_c;
-    ftbl_3args[ 3] = (arm_func_3args_t) abs_vec2f_neon;
-    ftbl_3args[ 4] = (arm_func_3args_t) abs_vec3f_c;
-    ftbl_3args[ 5] = (arm_func_3args_t) abs_vec3f_neon;
-    ftbl_3args[ 6] = (arm_func_3args_t) abs_vec4f_c;
-    ftbl_3args[ 7] = (arm_func_3args_t) abs_vec4f_neon;
+    ftbl_3args[ 0] = (ne10_func_3args_t) abs_float_c;
+    ftbl_3args[ 1] = (ne10_func_3args_t) abs_float_neon;
+    ftbl_3args[ 2] = (ne10_func_3args_t) abs_vec2f_c;
+    ftbl_3args[ 3] = (ne10_func_3args_t) abs_vec2f_neon;
+    ftbl_3args[ 4] = (ne10_func_3args_t) abs_vec3f_c;
+    ftbl_3args[ 5] = (ne10_func_3args_t) abs_vec3f_neon;
+    ftbl_3args[ 6] = (ne10_func_3args_t) abs_vec4f_c;
+    ftbl_3args[ 7] = (ne10_func_3args_t) abs_vec4f_neon;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -122,7 +122,7 @@ void test_abs()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -154,7 +154,7 @@ void test_abs()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_3args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -174,27 +174,27 @@ void test_abs()
 void test_addc()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 0] = (arm_func_4args_t) addc_float_c;
-    ftbl_4args[ 1] = (arm_func_4args_t) addc_float_neon;
-    ftbl_4args[ 2] = (arm_func_4args_t) addc_vec2f_c;
-    ftbl_4args[ 3] = (arm_func_4args_t) addc_vec2f_neon;
-    ftbl_4args[ 4] = (arm_func_4args_t) addc_vec3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) addc_vec3f_neon;
-    ftbl_4args[ 6] = (arm_func_4args_t) addc_vec4f_c;
-    ftbl_4args[ 7] = (arm_func_4args_t) addc_vec4f_neon;
+    ftbl_4args[ 0] = (ne10_func_4args_t) addc_float_c;
+    ftbl_4args[ 1] = (ne10_func_4args_t) addc_float_neon;
+    ftbl_4args[ 2] = (ne10_func_4args_t) addc_vec2f_c;
+    ftbl_4args[ 3] = (ne10_func_4args_t) addc_vec2f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) addc_vec3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) addc_vec3f_neon;
+    ftbl_4args[ 6] = (ne10_func_4args_t) addc_vec4f_c;
+    ftbl_4args[ 7] = (ne10_func_4args_t) addc_vec4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -225,8 +225,8 @@ void test_addc()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thecst->%d: %e [0x%04X] \n", i, thecst[i], * (unsigned int*) &thecst[i]);
+                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thecst->%d: %e [0x%04X] \n", i, thecst[i], * (ne10_uint32_t*) &thecst[i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -260,7 +260,7 @@ void test_addc()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, perftest_thecst, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -281,27 +281,27 @@ void test_addc()
 void test_add()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 0] = (arm_func_4args_t) add_float_c;
-    ftbl_4args[ 1] = (arm_func_4args_t) add_float_neon;
-    ftbl_4args[ 2] = (arm_func_4args_t) add_vec2f_c;
-    ftbl_4args[ 3] = (arm_func_4args_t) add_vec2f_neon;
-    ftbl_4args[ 4] = (arm_func_4args_t) add_vec3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) add_vec3f_neon;
-    ftbl_4args[ 6] = (arm_func_4args_t) add_vec4f_c;
-    ftbl_4args[ 7] = (arm_func_4args_t) add_vec4f_neon;
+    ftbl_4args[ 0] = (ne10_func_4args_t) add_float_c;
+    ftbl_4args[ 1] = (ne10_func_4args_t) add_float_neon;
+    ftbl_4args[ 2] = (ne10_func_4args_t) add_vec2f_c;
+    ftbl_4args[ 3] = (ne10_func_4args_t) add_vec2f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) add_vec3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) add_vec3f_neon;
+    ftbl_4args[ 6] = (ne10_func_4args_t) add_vec4f_c;
+    ftbl_4args[ 7] = (ne10_func_4args_t) add_vec4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -332,8 +332,8 @@ void test_add()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (unsigned int*) &thesrc2[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (ne10_uint32_t*) &thesrc2[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -367,7 +367,7 @@ void test_add()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, perftest_thesrc2, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -388,21 +388,21 @@ void test_add()
 void test_cross()
 {
 #define MAX_VEC_COMPONENTS 3
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 4] = (arm_func_4args_t) cross_vec3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) cross_vec3f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) cross_vec3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) cross_vec3f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC_LIMIT (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -433,8 +433,8 @@ void test_cross()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (unsigned int*) &thesrc2[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (ne10_uint32_t*) &thesrc2[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -468,7 +468,7 @@ void test_cross()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, perftest_thesrc2, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -489,27 +489,27 @@ void test_cross()
 void test_divc()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 0] = (arm_func_4args_t) divc_float_c;
-    ftbl_4args[ 1] = (arm_func_4args_t) divc_float_neon;
-    ftbl_4args[ 2] = (arm_func_4args_t) divc_vec2f_c;
-    ftbl_4args[ 3] = (arm_func_4args_t) divc_vec2f_neon;
-    ftbl_4args[ 4] = (arm_func_4args_t) divc_vec3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) divc_vec3f_neon;
-    ftbl_4args[ 6] = (arm_func_4args_t) divc_vec4f_c;
-    ftbl_4args[ 7] = (arm_func_4args_t) divc_vec4f_neon;
+    ftbl_4args[ 0] = (ne10_func_4args_t) divc_float_c;
+    ftbl_4args[ 1] = (ne10_func_4args_t) divc_float_neon;
+    ftbl_4args[ 2] = (ne10_func_4args_t) divc_vec2f_c;
+    ftbl_4args[ 3] = (ne10_func_4args_t) divc_vec2f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) divc_vec3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) divc_vec3f_neon;
+    ftbl_4args[ 6] = (ne10_func_4args_t) divc_vec4f_c;
+    ftbl_4args[ 7] = (ne10_func_4args_t) divc_vec4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -540,8 +540,8 @@ void test_divc()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thecst->%d: %e [0x%04X] \n", i, thecst[i], * (unsigned int*) &thecst[i]);
+                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thecst->%d: %e [0x%04X] \n", i, thecst[i], * (ne10_uint32_t*) &thecst[i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -575,7 +575,7 @@ void test_divc()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, perftest_thecst, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -596,27 +596,27 @@ void test_divc()
 void test_div()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 0] = (arm_func_4args_t) div_float_c;
-    ftbl_4args[ 1] = (arm_func_4args_t) div_float_neon;
-    ftbl_4args[ 2] = (arm_func_4args_t) vdiv_vec2f_c;
-    ftbl_4args[ 3] = (arm_func_4args_t) vdiv_vec2f_neon;
-    ftbl_4args[ 4] = (arm_func_4args_t) vdiv_vec3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) vdiv_vec3f_neon;
-    ftbl_4args[ 6] = (arm_func_4args_t) vdiv_vec4f_c;
-    ftbl_4args[ 7] = (arm_func_4args_t) vdiv_vec4f_neon;
+    ftbl_4args[ 0] = (ne10_func_4args_t) div_float_c;
+    ftbl_4args[ 1] = (ne10_func_4args_t) div_float_neon;
+    ftbl_4args[ 2] = (ne10_func_4args_t) vdiv_vec2f_c;
+    ftbl_4args[ 3] = (ne10_func_4args_t) vdiv_vec2f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) vdiv_vec3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) vdiv_vec3f_neon;
+    ftbl_4args[ 6] = (ne10_func_4args_t) vdiv_vec4f_c;
+    ftbl_4args[ 7] = (ne10_func_4args_t) vdiv_vec4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC_LIMIT (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -647,8 +647,8 @@ void test_div()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (unsigned int*) &thesrc2[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (ne10_uint32_t*) &thesrc2[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_LARGE, vec_size);
@@ -682,7 +682,7 @@ void test_div()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, perftest_thesrc2, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -703,25 +703,25 @@ void test_div()
 void test_dot()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 2] = (arm_func_4args_t) dot_vec2f_c;
-    ftbl_4args[ 3] = (arm_func_4args_t) dot_vec2f_neon;
-    ftbl_4args[ 4] = (arm_func_4args_t) dot_vec3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) dot_vec3f_neon;
-    ftbl_4args[ 6] = (arm_func_4args_t) dot_vec4f_c;
-    ftbl_4args[ 7] = (arm_func_4args_t) dot_vec4f_neon;
+    ftbl_4args[ 2] = (ne10_func_4args_t) dot_vec2f_c;
+    ftbl_4args[ 3] = (ne10_func_4args_t) dot_vec2f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) dot_vec3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) dot_vec3f_neon;
+    ftbl_4args[ 6] = (ne10_func_4args_t) dot_vec4f_c;
+    ftbl_4args[ 7] = (ne10_func_4args_t) dot_vec4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC_LIMIT (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -752,8 +752,8 @@ void test_dot()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (unsigned int*) &thesrc2[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (ne10_uint32_t*) &thesrc2[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos], &thedst_neon[pos], ERROR_MARGIN_SMALL, 1);
@@ -787,7 +787,7 @@ void test_dot()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, perftest_thesrc2, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -808,25 +808,25 @@ void test_dot()
 void test_len()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     /* init function table */
     memset (ftbl_3args, 0, sizeof (ftbl_3args));
-    ftbl_3args[ 2] = (arm_func_3args_t) len_vec2f_c;
-    ftbl_3args[ 3] = (arm_func_3args_t) len_vec2f_neon;
-    ftbl_3args[ 4] = (arm_func_3args_t) len_vec3f_c;
-    ftbl_3args[ 5] = (arm_func_3args_t) len_vec3f_neon;
-    ftbl_3args[ 6] = (arm_func_3args_t) len_vec4f_c;
-    ftbl_3args[ 7] = (arm_func_3args_t) len_vec4f_neon;
+    ftbl_3args[ 2] = (ne10_func_3args_t) len_vec2f_c;
+    ftbl_3args[ 3] = (ne10_func_3args_t) len_vec2f_neon;
+    ftbl_3args[ 4] = (ne10_func_3args_t) len_vec3f_c;
+    ftbl_3args[ 5] = (ne10_func_3args_t) len_vec3f_neon;
+    ftbl_3args[ 6] = (ne10_func_3args_t) len_vec4f_c;
+    ftbl_3args[ 7] = (ne10_func_3args_t) len_vec4f_neon;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC_LIMIT (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -856,7 +856,7 @@ void test_len()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_LARGE, 1);
@@ -888,7 +888,7 @@ void test_len()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_3args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -908,27 +908,27 @@ void test_len()
 void test_mlac()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_5args, 0, sizeof (ftbl_5args));
-    ftbl_5args[ 0] = (arm_func_5args_t) mlac_float_c;
-    ftbl_5args[ 1] = (arm_func_5args_t) mlac_float_neon;
-    ftbl_5args[ 2] = (arm_func_5args_t) mlac_vec2f_c;
-    ftbl_5args[ 3] = (arm_func_5args_t) mlac_vec2f_neon;
-    ftbl_5args[ 4] = (arm_func_5args_t) mlac_vec3f_c;
-    ftbl_5args[ 5] = (arm_func_5args_t) mlac_vec3f_neon;
-    ftbl_5args[ 6] = (arm_func_5args_t) mlac_vec4f_c;
-    ftbl_5args[ 7] = (arm_func_5args_t) mlac_vec4f_neon;
+    ftbl_5args[ 0] = (ne10_func_5args_t) mlac_float_c;
+    ftbl_5args[ 1] = (ne10_func_5args_t) mlac_float_neon;
+    ftbl_5args[ 2] = (ne10_func_5args_t) mlac_vec2f_c;
+    ftbl_5args[ 3] = (ne10_func_5args_t) mlac_vec2f_neon;
+    ftbl_5args[ 4] = (ne10_func_5args_t) mlac_vec3f_c;
+    ftbl_5args[ 5] = (ne10_func_5args_t) mlac_vec3f_neon;
+    ftbl_5args[ 6] = (ne10_func_5args_t) mlac_vec4f_c;
+    ftbl_5args[ 7] = (ne10_func_5args_t) mlac_vec4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC_LIMIT (theacc, guarded_acc, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -960,9 +960,9 @@ void test_mlac()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "theacc->%d: %f [0x%04X] \n", i, theacc[pos * vec_size + i], * (unsigned int*) &theacc[pos * vec_size + i]);
-                    fprintf (stdout, "thesrc->%d: %f [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thecst->%d: %f [0x%04X] \n", i, thecst[i], * (unsigned int*) &thecst[i]);
+                    fprintf (stdout, "theacc->%d: %f [0x%04X] \n", i, theacc[pos * vec_size + i], * (ne10_uint32_t*) &theacc[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc->%d: %f [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thecst->%d: %f [0x%04X] \n", i, thecst[i], * (ne10_uint32_t*) &thecst[i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -998,7 +998,7 @@ void test_mlac()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_5args[2 * func_loop + 1] (perftest_thedst_neon, perftest_theacc, perftest_thesrc1, perftest_thecst, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -1020,27 +1020,27 @@ void test_mlac()
 void test_mla()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_5args, 0, sizeof (ftbl_5args));
-    ftbl_5args[ 0] = (arm_func_5args_t) mla_float_c;
-    ftbl_5args[ 1] = (arm_func_5args_t) mla_float_neon;
-    ftbl_5args[ 2] = (arm_func_5args_t) vmla_vec2f_c;
-    ftbl_5args[ 3] = (arm_func_5args_t) vmla_vec2f_neon;
-    ftbl_5args[ 4] = (arm_func_5args_t) vmla_vec3f_c;
-    ftbl_5args[ 5] = (arm_func_5args_t) vmla_vec3f_neon;
-    ftbl_5args[ 6] = (arm_func_5args_t) vmla_vec4f_c;
-    ftbl_5args[ 7] = (arm_func_5args_t) vmla_vec4f_neon;
+    ftbl_5args[ 0] = (ne10_func_5args_t) mla_float_c;
+    ftbl_5args[ 1] = (ne10_func_5args_t) mla_float_neon;
+    ftbl_5args[ 2] = (ne10_func_5args_t) vmla_vec2f_c;
+    ftbl_5args[ 3] = (ne10_func_5args_t) vmla_vec2f_neon;
+    ftbl_5args[ 4] = (ne10_func_5args_t) vmla_vec3f_c;
+    ftbl_5args[ 5] = (ne10_func_5args_t) vmla_vec3f_neon;
+    ftbl_5args[ 6] = (ne10_func_5args_t) vmla_vec4f_c;
+    ftbl_5args[ 7] = (ne10_func_5args_t) vmla_vec4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC_LIMIT (theacc, guarded_acc, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -1072,9 +1072,9 @@ void test_mla()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "theacc->%d: %e [0x%04X] \n", i, theacc[pos * vec_size + i], * (unsigned int*) &theacc[pos * vec_size + i]);
-                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (unsigned int*) &thesrc2[pos * vec_size + i]);
+                    fprintf (stdout, "theacc->%d: %e [0x%04X] \n", i, theacc[pos * vec_size + i], * (ne10_uint32_t*) &theacc[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (ne10_uint32_t*) &thesrc2[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -1110,7 +1110,7 @@ void test_mla()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_5args[2 * func_loop + 1] (perftest_thedst_neon, perftest_theacc, perftest_thesrc1, perftest_thesrc2, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -1132,27 +1132,27 @@ void test_mla()
 void test_mulc()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 0] = (arm_func_4args_t) mulc_float_c;
-    ftbl_4args[ 1] = (arm_func_4args_t) mulc_float_neon;
-    ftbl_4args[ 2] = (arm_func_4args_t) mulc_vec2f_c;
-    ftbl_4args[ 3] = (arm_func_4args_t) mulc_vec2f_neon;
-    ftbl_4args[ 4] = (arm_func_4args_t) mulc_vec3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) mulc_vec3f_neon;
-    ftbl_4args[ 6] = (arm_func_4args_t) mulc_vec4f_c;
-    ftbl_4args[ 7] = (arm_func_4args_t) mulc_vec4f_neon;
+    ftbl_4args[ 0] = (ne10_func_4args_t) mulc_float_c;
+    ftbl_4args[ 1] = (ne10_func_4args_t) mulc_float_neon;
+    ftbl_4args[ 2] = (ne10_func_4args_t) mulc_vec2f_c;
+    ftbl_4args[ 3] = (ne10_func_4args_t) mulc_vec2f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) mulc_vec3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) mulc_vec3f_neon;
+    ftbl_4args[ 6] = (ne10_func_4args_t) mulc_vec4f_c;
+    ftbl_4args[ 7] = (ne10_func_4args_t) mulc_vec4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC_LIMIT (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -1183,8 +1183,8 @@ void test_mulc()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thecst->%d: %e [0x%04X] \n", i, thecst[i], * (unsigned int*) &thecst[i]);
+                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thecst->%d: %e [0x%04X] \n", i, thecst[i], * (ne10_uint32_t*) &thecst[i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -1218,7 +1218,7 @@ void test_mulc()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, perftest_thecst, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -1239,27 +1239,27 @@ void test_mulc()
 void test_mul()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 0] = (arm_func_4args_t) mul_float_c;
-    ftbl_4args[ 1] = (arm_func_4args_t) mul_float_neon;
-    ftbl_4args[ 2] = (arm_func_4args_t) vmul_vec2f_c;
-    ftbl_4args[ 3] = (arm_func_4args_t) vmul_vec2f_neon;
-    ftbl_4args[ 4] = (arm_func_4args_t) vmul_vec3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) vmul_vec3f_neon;
-    ftbl_4args[ 6] = (arm_func_4args_t) vmul_vec4f_c;
-    ftbl_4args[ 7] = (arm_func_4args_t) vmul_vec4f_neon;
+    ftbl_4args[ 0] = (ne10_func_4args_t) mul_float_c;
+    ftbl_4args[ 1] = (ne10_func_4args_t) mul_float_neon;
+    ftbl_4args[ 2] = (ne10_func_4args_t) vmul_vec2f_c;
+    ftbl_4args[ 3] = (ne10_func_4args_t) vmul_vec2f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) vmul_vec3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) vmul_vec3f_neon;
+    ftbl_4args[ 6] = (ne10_func_4args_t) vmul_vec4f_c;
+    ftbl_4args[ 7] = (ne10_func_4args_t) vmul_vec4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC_LIMIT (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -1290,8 +1290,8 @@ void test_mul()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (unsigned int*) &thesrc2[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (ne10_uint32_t*) &thesrc2[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -1325,7 +1325,7 @@ void test_mul()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, perftest_thesrc2, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -1346,25 +1346,25 @@ void test_mul()
 void test_normalize()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     /* init function table */
     memset (ftbl_3args, 0, sizeof (ftbl_3args));
-    ftbl_3args[ 2] = (arm_func_3args_t) normalize_vec2f_c;
-    ftbl_3args[ 3] = (arm_func_3args_t) normalize_vec2f_neon;
-    ftbl_3args[ 4] = (arm_func_3args_t) normalize_vec3f_c;
-    ftbl_3args[ 5] = (arm_func_3args_t) normalize_vec3f_neon;
-    ftbl_3args[ 6] = (arm_func_3args_t) normalize_vec4f_c;
-    ftbl_3args[ 7] = (arm_func_3args_t) normalize_vec4f_neon;
+    ftbl_3args[ 2] = (ne10_func_3args_t) normalize_vec2f_c;
+    ftbl_3args[ 3] = (ne10_func_3args_t) normalize_vec2f_neon;
+    ftbl_3args[ 4] = (ne10_func_3args_t) normalize_vec3f_c;
+    ftbl_3args[ 5] = (ne10_func_3args_t) normalize_vec3f_neon;
+    ftbl_3args[ 6] = (ne10_func_3args_t) normalize_vec4f_c;
+    ftbl_3args[ 7] = (ne10_func_3args_t) normalize_vec4f_neon;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC_LIMIT (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -1394,7 +1394,7 @@ void test_normalize()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_LARGE, vec_size);
@@ -1426,7 +1426,7 @@ void test_normalize()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_3args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -1446,27 +1446,27 @@ void test_normalize()
 void test_rsbc()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 0] = (arm_func_4args_t) rsbc_float_c;
-    ftbl_4args[ 1] = (arm_func_4args_t) rsbc_float_neon;
-    ftbl_4args[ 2] = (arm_func_4args_t) rsbc_vec2f_c;
-    ftbl_4args[ 3] = (arm_func_4args_t) rsbc_vec2f_neon;
-    ftbl_4args[ 4] = (arm_func_4args_t) rsbc_vec3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) rsbc_vec3f_neon;
-    ftbl_4args[ 6] = (arm_func_4args_t) rsbc_vec4f_c;
-    ftbl_4args[ 7] = (arm_func_4args_t) rsbc_vec4f_neon;
+    ftbl_4args[ 0] = (ne10_func_4args_t) rsbc_float_c;
+    ftbl_4args[ 1] = (ne10_func_4args_t) rsbc_float_neon;
+    ftbl_4args[ 2] = (ne10_func_4args_t) rsbc_vec2f_c;
+    ftbl_4args[ 3] = (ne10_func_4args_t) rsbc_vec2f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) rsbc_vec3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) rsbc_vec3f_neon;
+    ftbl_4args[ 6] = (ne10_func_4args_t) rsbc_vec4f_c;
+    ftbl_4args[ 7] = (ne10_func_4args_t) rsbc_vec4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -1497,8 +1497,8 @@ void test_rsbc()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thecst->%d: %e [0x%04X] \n", i, thecst[i], * (unsigned int*) &thecst[i]);
+                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thecst->%d: %e [0x%04X] \n", i, thecst[i], * (ne10_uint32_t*) &thecst[i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -1532,7 +1532,7 @@ void test_rsbc()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, perftest_thecst, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -1553,27 +1553,27 @@ void test_rsbc()
 void test_setc()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_3args, 0, sizeof (ftbl_3args));
-    ftbl_3args[ 0] = (arm_func_3args_t) setc_float_c;
-    ftbl_3args[ 1] = (arm_func_3args_t) setc_float_neon;
-    ftbl_3args[ 2] = (arm_func_3args_t) setc_vec2f_c;
-    ftbl_3args[ 3] = (arm_func_3args_t) setc_vec2f_neon;
-    ftbl_3args[ 4] = (arm_func_3args_t) setc_vec3f_c;
-    ftbl_3args[ 5] = (arm_func_3args_t) setc_vec3f_neon;
-    ftbl_3args[ 6] = (arm_func_3args_t) setc_vec4f_c;
-    ftbl_3args[ 7] = (arm_func_3args_t) setc_vec4f_neon;
+    ftbl_3args[ 0] = (ne10_func_3args_t) setc_float_c;
+    ftbl_3args[ 1] = (ne10_func_3args_t) setc_float_neon;
+    ftbl_3args[ 2] = (ne10_func_3args_t) setc_vec2f_c;
+    ftbl_3args[ 3] = (ne10_func_3args_t) setc_vec2f_neon;
+    ftbl_3args[ 4] = (ne10_func_3args_t) setc_vec3f_c;
+    ftbl_3args[ 5] = (ne10_func_3args_t) setc_vec3f_neon;
+    ftbl_3args[ 6] = (ne10_func_3args_t) setc_vec4f_c;
+    ftbl_3args[ 7] = (ne10_func_3args_t) setc_vec4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC (thecst, guarded_cst, MAX_VEC_COMPONENTS); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -1603,8 +1603,8 @@ void test_setc()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thecst->%d: %e [0x%04X] \n", i, thecst[i], * (unsigned int*) &thecst[i]);
+                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thecst->%d: %e [0x%04X] \n", i, thecst[i], * (ne10_uint32_t*) &thecst[i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -1636,7 +1636,7 @@ void test_setc()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_3args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thecst, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -1656,27 +1656,27 @@ void test_setc()
 void test_subc()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 0] = (arm_func_4args_t) subc_float_c;
-    ftbl_4args[ 1] = (arm_func_4args_t) subc_float_neon;
-    ftbl_4args[ 2] = (arm_func_4args_t) subc_vec2f_c;
-    ftbl_4args[ 3] = (arm_func_4args_t) subc_vec2f_neon;
-    ftbl_4args[ 4] = (arm_func_4args_t) subc_vec3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) subc_vec3f_neon;
-    ftbl_4args[ 6] = (arm_func_4args_t) subc_vec4f_c;
-    ftbl_4args[ 7] = (arm_func_4args_t) subc_vec4f_neon;
+    ftbl_4args[ 0] = (ne10_func_4args_t) subc_float_c;
+    ftbl_4args[ 1] = (ne10_func_4args_t) subc_float_neon;
+    ftbl_4args[ 2] = (ne10_func_4args_t) subc_vec2f_c;
+    ftbl_4args[ 3] = (ne10_func_4args_t) subc_vec2f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) subc_vec3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) subc_vec3f_neon;
+    ftbl_4args[ 6] = (ne10_func_4args_t) subc_vec4f_c;
+    ftbl_4args[ 7] = (ne10_func_4args_t) subc_vec4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -1707,8 +1707,8 @@ void test_subc()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thecst->%d: %e [0x%04X] \n", i, thecst[i], * (unsigned int*) &thecst[i]);
+                    fprintf (stdout, "thesrc->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thecst->%d: %e [0x%04X] \n", i, thecst[i], * (ne10_uint32_t*) &thecst[i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -1742,7 +1742,7 @@ void test_subc()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, perftest_thecst, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -1763,27 +1763,27 @@ void test_subc()
 void test_sub()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 0] = (arm_func_4args_t) sub_float_c;
-    ftbl_4args[ 1] = (arm_func_4args_t) sub_float_neon;
-    ftbl_4args[ 2] = (arm_func_4args_t) sub_vec2f_c;
-    ftbl_4args[ 3] = (arm_func_4args_t) sub_vec2f_neon;
-    ftbl_4args[ 4] = (arm_func_4args_t) sub_vec3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) sub_vec3f_neon;
-    ftbl_4args[ 6] = (arm_func_4args_t) sub_vec4f_c;
-    ftbl_4args[ 7] = (arm_func_4args_t) sub_vec4f_neon;
+    ftbl_4args[ 0] = (ne10_func_4args_t) sub_float_c;
+    ftbl_4args[ 1] = (ne10_func_4args_t) sub_float_neon;
+    ftbl_4args[ 2] = (ne10_func_4args_t) sub_vec2f_c;
+    ftbl_4args[ 3] = (ne10_func_4args_t) sub_vec2f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) sub_vec3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) sub_vec3f_neon;
+    ftbl_4args[ 6] = (ne10_func_4args_t) sub_vec4f_c;
+    ftbl_4args[ 7] = (ne10_func_4args_t) sub_vec4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -1814,8 +1814,8 @@ void test_sub()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (unsigned int*) &thesrc2[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (ne10_uint32_t*) &thesrc2[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -1849,7 +1849,7 @@ void test_sub()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, perftest_thesrc2, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -1870,25 +1870,25 @@ void test_sub()
 void test_addmat()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 2] = (arm_func_4args_t) addmat_2x2f_c;
-    ftbl_4args[ 3] = (arm_func_4args_t) addmat_2x2f_neon;
-    ftbl_4args[ 4] = (arm_func_4args_t) addmat_3x3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) addmat_3x3f_neon;
-    ftbl_4args[ 6] = (arm_func_4args_t) addmat_4x4f_c;
-    ftbl_4args[ 7] = (arm_func_4args_t) addmat_4x4f_neon;
+    ftbl_4args[ 2] = (ne10_func_4args_t) addmat_2x2f_c;
+    ftbl_4args[ 3] = (ne10_func_4args_t) addmat_2x2f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) addmat_3x3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) addmat_3x3f_neon;
+    ftbl_4args[ 6] = (ne10_func_4args_t) addmat_4x4f_c;
+    ftbl_4args[ 7] = (ne10_func_4args_t) addmat_4x4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -1919,8 +1919,8 @@ void test_addmat()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (unsigned int*) &thesrc2[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (ne10_uint32_t*) &thesrc2[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -1954,7 +1954,7 @@ void test_addmat()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, perftest_thesrc2, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -1975,25 +1975,25 @@ void test_addmat()
 void test_detmat()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_3args, 0, sizeof (ftbl_3args));
-    ftbl_3args[ 2] = (arm_func_3args_t) detmat_2x2f_c;
-    ftbl_3args[ 3] = (arm_func_3args_t) detmat_2x2f_neon;
-    ftbl_3args[ 4] = (arm_func_3args_t) detmat_3x3f_c;
-    ftbl_3args[ 5] = (arm_func_3args_t) detmat_3x3f_neon;
-    ftbl_3args[ 6] = (arm_func_3args_t) detmat_4x4f_c;
-    ftbl_3args[ 7] = (arm_func_3args_t) detmat_4x4f_neon;
+    ftbl_3args[ 2] = (ne10_func_3args_t) detmat_2x2f_c;
+    ftbl_3args[ 3] = (ne10_func_3args_t) detmat_2x2f_neon;
+    ftbl_3args[ 4] = (ne10_func_3args_t) detmat_3x3f_c;
+    ftbl_3args[ 5] = (ne10_func_3args_t) detmat_3x3f_neon;
+    ftbl_3args[ 6] = (ne10_func_3args_t) detmat_4x4f_c;
+    ftbl_3args[ 7] = (ne10_func_3args_t) detmat_4x4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC_LIMIT (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -2023,7 +2023,7 @@ void test_detmat()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, 1);
@@ -2055,7 +2055,7 @@ void test_detmat()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_3args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -2075,25 +2075,25 @@ void test_detmat()
 void test_identitymat()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_2args, 0, sizeof (ftbl_2args));
-    ftbl_2args[ 2] = (arm_func_2args_t) identitymat_2x2f_c;
-    ftbl_2args[ 3] = (arm_func_2args_t) identitymat_2x2f_neon;
-    ftbl_2args[ 4] = (arm_func_2args_t) identitymat_3x3f_c;
-    ftbl_2args[ 5] = (arm_func_2args_t) identitymat_3x3f_neon;
-    ftbl_2args[ 6] = (arm_func_2args_t) identitymat_4x4f_c;
-    ftbl_2args[ 7] = (arm_func_2args_t) identitymat_4x4f_neon;
+    ftbl_2args[ 2] = (ne10_func_2args_t) identitymat_2x2f_c;
+    ftbl_2args[ 3] = (ne10_func_2args_t) identitymat_2x2f_neon;
+    ftbl_2args[ 4] = (ne10_func_2args_t) identitymat_3x3f_c;
+    ftbl_2args[ 5] = (ne10_func_2args_t) identitymat_3x3f_neon;
+    ftbl_2args[ 6] = (ne10_func_2args_t) identitymat_4x4f_c;
+    ftbl_2args[ 7] = (ne10_func_2args_t) identitymat_4x4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS * MAX_VEC_COMPONENTS;
 
     /* init dst memory */
     NE10_DST_ALLOC (thedst_c, guarded_dst_c, fixed_length);
@@ -2144,7 +2144,7 @@ void test_identitymat()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_2args[2 * func_loop + 1] (perftest_thedst_neon, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -2163,25 +2163,25 @@ void test_identitymat()
 void test_invmat()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_3args, 0, sizeof (ftbl_3args));
-    ftbl_3args[ 2] = (arm_func_3args_t) invmat_2x2f_c;
-    ftbl_3args[ 3] = (arm_func_3args_t) invmat_2x2f_neon;
-    ftbl_3args[ 4] = (arm_func_3args_t) invmat_3x3f_c;
-    ftbl_3args[ 5] = (arm_func_3args_t) invmat_3x3f_neon;
-    ftbl_3args[ 6] = (arm_func_3args_t) invmat_4x4f_c;
-    ftbl_3args[ 7] = (arm_func_3args_t) invmat_4x4f_neon;
+    ftbl_3args[ 2] = (ne10_func_3args_t) invmat_2x2f_c;
+    ftbl_3args[ 3] = (ne10_func_3args_t) invmat_2x2f_neon;
+    ftbl_3args[ 4] = (ne10_func_3args_t) invmat_3x3f_c;
+    ftbl_3args[ 5] = (ne10_func_3args_t) invmat_3x3f_neon;
+    ftbl_3args[ 6] = (ne10_func_3args_t) invmat_4x4f_c;
+    ftbl_3args[ 7] = (ne10_func_3args_t) invmat_4x4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC_LIMIT (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -2211,7 +2211,7 @@ void test_invmat()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_LARGE, vec_size);
@@ -2243,7 +2243,7 @@ void test_invmat()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_3args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -2263,25 +2263,25 @@ void test_invmat()
 void test_mulmat()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 2] = (arm_func_4args_t) mulmat_2x2f_c;
-    ftbl_4args[ 3] = (arm_func_4args_t) mulmat_2x2f_neon;
-    ftbl_4args[ 4] = (arm_func_4args_t) mulmat_3x3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) mulmat_3x3f_neon;
-    ftbl_4args[ 6] = (arm_func_4args_t) mulmat_4x4f_c;
-    ftbl_4args[ 7] = (arm_func_4args_t) mulmat_4x4f_neon;
+    ftbl_4args[ 2] = (ne10_func_4args_t) mulmat_2x2f_c;
+    ftbl_4args[ 3] = (ne10_func_4args_t) mulmat_2x2f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) mulmat_3x3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) mulmat_3x3f_neon;
+    ftbl_4args[ 6] = (ne10_func_4args_t) mulmat_4x4f_c;
+    ftbl_4args[ 7] = (ne10_func_4args_t) mulmat_4x4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC_LIMIT (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -2312,8 +2312,8 @@ void test_mulmat()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (unsigned int*) &thesrc2[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (ne10_uint32_t*) &thesrc2[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -2347,7 +2347,7 @@ void test_mulmat()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, perftest_thesrc2, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -2368,25 +2368,25 @@ void test_mulmat()
 void test_submat()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 2] = (arm_func_4args_t) submat_2x2f_c;
-    ftbl_4args[ 3] = (arm_func_4args_t) submat_2x2f_neon;
-    ftbl_4args[ 4] = (arm_func_4args_t) submat_3x3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) submat_3x3f_neon;
-    ftbl_4args[ 6] = (arm_func_4args_t) submat_4x4f_c;
-    ftbl_4args[ 7] = (arm_func_4args_t) submat_4x4f_neon;
+    ftbl_4args[ 2] = (ne10_func_4args_t) submat_2x2f_c;
+    ftbl_4args[ 3] = (ne10_func_4args_t) submat_2x2f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) submat_3x3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) submat_3x3f_neon;
+    ftbl_4args[ 6] = (ne10_func_4args_t) submat_4x4f_c;
+    ftbl_4args[ 7] = (ne10_func_4args_t) submat_4x4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -2417,8 +2417,8 @@ void test_submat()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
-                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (unsigned int*) &thesrc2[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc2->%d: %e [0x%04X] \n", i, thesrc2[pos * vec_size + i], * (ne10_uint32_t*) &thesrc2[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -2452,7 +2452,7 @@ void test_submat()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, perftest_thesrc2, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -2473,25 +2473,25 @@ void test_submat()
 void test_transmat()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_3args, 0, sizeof (ftbl_3args));
-    ftbl_3args[ 2] = (arm_func_3args_t) transmat_2x2f_c;
-    ftbl_3args[ 3] = (arm_func_3args_t) transmat_2x2f_neon;
-    ftbl_3args[ 4] = (arm_func_3args_t) transmat_3x3f_c;
-    ftbl_3args[ 5] = (arm_func_3args_t) transmat_3x3f_neon;
-    ftbl_3args[ 6] = (arm_func_3args_t) transmat_4x4f_c;
-    ftbl_3args[ 7] = (arm_func_3args_t) transmat_4x4f_neon;
+    ftbl_3args[ 2] = (ne10_func_3args_t) transmat_2x2f_c;
+    ftbl_3args[ 3] = (ne10_func_3args_t) transmat_2x2f_neon;
+    ftbl_3args[ 4] = (ne10_func_3args_t) transmat_3x3f_c;
+    ftbl_3args[ 5] = (ne10_func_3args_t) transmat_3x3f_neon;
+    ftbl_3args[ 6] = (ne10_func_3args_t) transmat_4x4f_c;
+    ftbl_3args[ 7] = (ne10_func_3args_t) transmat_4x4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -2521,7 +2521,7 @@ void test_transmat()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -2553,7 +2553,7 @@ void test_transmat()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_3args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thesrc1, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -2573,25 +2573,25 @@ void test_transmat()
 void test_mulcmatvec()
 {
 #define MAX_VEC_COMPONENTS 4
-    int loop;
-    int i;
-    int func_loop;
-    int vec_size;
-    int pos;
+    ne10_int32_t loop;
+    ne10_int32_t i;
+    ne10_int32_t func_loop;
+    ne10_int32_t vec_size;
+    ne10_int32_t pos;
 
     fprintf (stdout, "----------%30s start\n", __FUNCTION__);
 
     /* init function table */
     memset (ftbl_4args, 0, sizeof (ftbl_4args));
-    ftbl_4args[ 2] = (arm_func_4args_t) mulcmatvec_cm2x2f_v2f_c;
-    ftbl_4args[ 3] = (arm_func_4args_t) mulcmatvec_cm2x2f_v2f_neon;
-    ftbl_4args[ 4] = (arm_func_4args_t) mulcmatvec_cm3x3f_v3f_c;
-    ftbl_4args[ 5] = (arm_func_4args_t) mulcmatvec_cm3x3f_v3f_neon;
-    ftbl_4args[ 6] = (arm_func_4args_t) mulcmatvec_cm4x4f_v4f_c;
-    ftbl_4args[ 7] = (arm_func_4args_t) mulcmatvec_cm4x4f_v4f_neon;
+    ftbl_4args[ 2] = (ne10_func_4args_t) mulcmatvec_cm2x2f_v2f_c;
+    ftbl_4args[ 3] = (ne10_func_4args_t) mulcmatvec_cm2x2f_v2f_neon;
+    ftbl_4args[ 4] = (ne10_func_4args_t) mulcmatvec_cm3x3f_v3f_c;
+    ftbl_4args[ 5] = (ne10_func_4args_t) mulcmatvec_cm3x3f_v3f_neon;
+    ftbl_4args[ 6] = (ne10_func_4args_t) mulcmatvec_cm4x4f_v4f_c;
+    ftbl_4args[ 7] = (ne10_func_4args_t) mulcmatvec_cm4x4f_v4f_neon;
 
 #if defined (SMOKE_TEST)||(REGRESSION_TEST)
-    const unsigned int fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
+    const ne10_uint32_t fixed_length = TEST_ITERATION * MAX_VEC_COMPONENTS;
 
     /* init src memory */
     NE10_SRC_ALLOC_LIMIT (thesrc1, guarded_src1, fixed_length); // 16 extra bytes at the begining and 16 extra bytes at the end
@@ -2622,11 +2622,11 @@ void test_mulcmatvec()
                 fprintf (stdout, "func: %d loop count: %d position: %d \n", func_loop, loop, pos);
                 for (i = 0; i < vec_size * vec_size; i++)
                 {
-                    fprintf (stdout, "thecst->%d: %e [0x%04X] \n", i, thecst[i], * (unsigned int*) &thecst[i]);
+                    fprintf (stdout, "thecst->%d: %e [0x%04X] \n", i, thecst[i], * (ne10_uint32_t*) &thecst[i]);
                 }
                 for (i = 0; i < vec_size; i++)
                 {
-                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (unsigned int*) &thesrc1[pos * vec_size + i]);
+                    fprintf (stdout, "thesrc1->%d: %e [0x%04X] \n", i, thesrc1[pos * vec_size + i], * (ne10_uint32_t*) &thesrc1[pos * vec_size + i]);
                 }
 #endif
                 assert_float_vec_equal (&thedst_c[pos * vec_size], &thedst_neon[pos * vec_size], ERROR_MARGIN_SMALL, vec_size);
@@ -2660,7 +2660,7 @@ void test_mulcmatvec()
         GET_TIME (time_neon,
                   for (loop = 0; loop < PERF_TEST_ITERATION; loop++) ftbl_4args[2 * func_loop + 1] (perftest_thedst_neon, perftest_thecst, perftest_thesrc1, loop);
                  );
-        time_speedup = (double) (time_neon - time_overhead) / (double) (time_c - time_overhead);
+        time_speedup = (time_neon - time_overhead) / (time_c - time_overhead);
         fprintf (stdout, "vector %d\n", func_loop + 1);
         fprintf (stdout, "average time speedup  %8f \n", time_speedup);
         //fprintf(stdout, "average time overhead %8d micro seconds\n", time_overhead);
@@ -2697,8 +2697,7 @@ void test_fixture_math (void)
     fixture_setup (my_test_setup);
     fixture_teardown (my_test_teardown);
 
-    run_test (test_add);
-#if 0
+#if 1
     run_test (test_abs);       // run tests
     run_test (test_addc);
     run_test (test_add);

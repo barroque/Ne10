@@ -23,7 +23,7 @@
 
 #include <assert.h>
 
-arm_result_t cross_vec3f_c (arm_vec3f_t * dst, arm_vec3f_t * src1, arm_vec3f_t * src2, unsigned int count)
+ne10_result_t cross_vec3f_c (ne10_vec3f_t * dst, ne10_vec3f_t * src1, ne10_vec3f_t * src2, ne10_uint32_t count)
 {
     NE10_X_OPERATION_FLOAT_C
     (

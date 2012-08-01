@@ -21,9 +21,9 @@
 #include "NE10_types.h"
 #include "macros.h"
 
-arm_result_t identitymat_2x2f_c (arm_mat2x2f_t * dst, unsigned int count)
+ne10_result_t identitymat_2x2f_c (ne10_mat2x2f_t * dst, ne10_uint32_t count)
 {
-    arm_mat2x2f_t *src = dst; // dummy placeholder
+    ne10_mat2x2f_t *src = dst; // dummy placeholder
 
     NE10_DETMAT_OPERATION_X_C
     (
@@ -34,9 +34,9 @@ arm_result_t identitymat_2x2f_c (arm_mat2x2f_t * dst, unsigned int count)
     );
 }
 
-arm_result_t identitymat_3x3f_c (arm_mat3x3f_t * dst, unsigned int count)
+ne10_result_t identitymat_3x3f_c (ne10_mat3x3f_t * dst, ne10_uint32_t count)
 {
-    arm_mat3x3f_t *src = dst; // dummy placeholder
+    ne10_mat3x3f_t *src = dst; // dummy placeholder
 
     NE10_DETMAT_OPERATION_X_C
     (
@@ -54,9 +54,9 @@ arm_result_t identitymat_3x3f_c (arm_mat3x3f_t * dst, unsigned int count)
     );
 }
 
-arm_result_t identitymat_4x4f_c (arm_mat4x4f_t * dst, unsigned int count)
+ne10_result_t identitymat_4x4f_c (ne10_mat4x4f_t * dst, ne10_uint32_t count)
 {
-    arm_mat4x4f_t *src = dst; // dummy placeholder
+    ne10_mat4x4f_t *src = dst; // dummy placeholder
 
     NE10_DETMAT_OPERATION_X_C
     (

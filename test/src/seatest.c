@@ -11,11 +11,11 @@ int seatest_is_string_equal_i(const char* s1, const char* s2)
 #else
 #include <strings.h>
 #include "sys/time.h"
-unsigned long GetTickCount() //{ return 0;}
+double GetTickCount() //{ return 0;}
 {
     struct timeval tv;
     gettimeofday(&tv, NULL);
-    return (tv.tv_sec*1000000 + tv.tv_usec);
+    return (double)(tv.tv_sec*1000000.0 + tv.tv_usec);
 }
 void _getch( void ) { }
 int seatest_is_string_equal_i(const char* s1, const char* s2)

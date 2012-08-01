@@ -25,9 +25,9 @@
 
 #include <math.h>
 
-arm_result_t normalize_vec2f_c (arm_vec2f_t * dst, arm_vec2f_t * src, unsigned int count)
+ne10_result_t normalize_vec2f_c (ne10_vec2f_t * dst, ne10_vec2f_t * src, ne10_uint32_t count)
 {
-    float len;
+    ne10_float32_t len;
 
     NE10_LEN_OPERATION_X_C
     (
@@ -39,9 +39,9 @@ arm_result_t normalize_vec2f_c (arm_vec2f_t * dst, arm_vec2f_t * src, unsigned i
     );
 }
 
-arm_result_t normalize_vec3f_c (arm_vec3f_t * dst, arm_vec3f_t * src, unsigned int count)
+ne10_result_t normalize_vec3f_c (ne10_vec3f_t * dst, ne10_vec3f_t * src, ne10_uint32_t count)
 {
-    float len;
+    ne10_float32_t len;
 
     NE10_LEN_OPERATION_X_C
     (
@@ -55,9 +55,9 @@ arm_result_t normalize_vec3f_c (arm_vec3f_t * dst, arm_vec3f_t * src, unsigned i
     );
 }
 
-arm_result_t normalize_vec4f_c (arm_vec4f_t * dst, arm_vec4f_t * src, unsigned int count)
+ne10_result_t normalize_vec4f_c (ne10_vec4f_t * dst, ne10_vec4f_t * src, ne10_uint32_t count)
 {
-    float len;
+    ne10_float32_t len;
 
     NE10_LEN_OPERATION_X_C
     (

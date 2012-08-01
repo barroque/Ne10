@@ -68,7 +68,7 @@
 // The sign bit mask
 #define SIGNBIT_MASK  0x7FFFFFFF
 
-// What's the acceptable error between the integer representations of two float values
+// What's the acceptable error between the integer representations of two ne10_float32_t values
 #define ERROR_MARGIN_SMALL 0x0A
 #define ERROR_MARGIN_LARGE 0xFF
 
@@ -77,7 +77,7 @@
 #define ACCEPTABLE_WARNS_MATRICES 48
 
 #define NE10_SRC_ALLOC(src, guarded_src, length) { \
-        (guarded_src) = (arm_float_t*) calloc (2*ARRAY_GUARD_LEN + (length), sizeof(arm_float_t)); \
+        (guarded_src) = (ne10_float32_t*) calloc (2*ARRAY_GUARD_LEN + (length), sizeof(ne10_float32_t)); \
         if ((guarded_src) == NULL) \
             printf ("error: calloc src failed\n"); \
         (src) = (guarded_src) + ARRAY_GUARD_LEN; \
@@ -85,7 +85,7 @@
     }
 
 #define NE10_SRC_ALLOC_LIMIT(src, guarded_src, length) { \
-        (guarded_src) = (arm_float_t*) calloc (2*ARRAY_GUARD_LEN + (length), sizeof(arm_float_t)); \
+        (guarded_src) = (ne10_float32_t*) calloc (2*ARRAY_GUARD_LEN + (length), sizeof(ne10_float32_t)); \
         if ((guarded_src) == NULL) \
             printf ("error: calloc src failed\n"); \
         (src) = (guarded_src) + ARRAY_GUARD_LEN; \
@@ -93,7 +93,7 @@
     }
 
 #define NE10_DST_ALLOC(dst, guarded_dst, length) { \
-        (guarded_dst) = (arm_float_t*) calloc (2*ARRAY_GUARD_LEN + (length), sizeof(arm_float_t)); \
+        (guarded_dst) = (ne10_float32_t*) calloc (2*ARRAY_GUARD_LEN + (length), sizeof(ne10_float32_t)); \
         if ((guarded_dst) == NULL) \
             printf ("error: calloc dst failed\n"); \
         (dst) = (guarded_dst) + ARRAY_GUARD_LEN; \
@@ -104,20 +104,20 @@
         code \
         time = GetTickCount() - time;\
     }
-typedef arm_result_t (*arm_func_5args_t) (void * dst, void * acc, void * src1, void * src2, unsigned int count);
-typedef arm_result_t (*arm_func_4args_t) (void * dst, void * src1, void * src2, unsigned int count);
-typedef arm_result_t (*arm_func_3args_t) (void * dst, void * src, unsigned int count);
-typedef arm_result_t (*arm_func_2args_t) (void * dst, unsigned int count);
+typedef ne10_result_t (*ne10_func_5args_t) (void * dst, void * acc, void * src1, void * src2, ne10_uint32_t count);
+typedef ne10_result_t (*ne10_func_4args_t) (void * dst, void * src1, void * src2, ne10_uint32_t count);
+typedef ne10_result_t (*ne10_func_3args_t) (void * dst, void * src, ne10_uint32_t count);
+typedef ne10_result_t (*ne10_func_2args_t) (void * dst, ne10_uint32_t count);
 
 
-extern void FILL_FLOAT_ARRAY( arm_float_t *arr, unsigned int count );
-extern void FILL_FLOAT_ARRAY_LIMIT( arm_float_t *arr, unsigned int count );
-extern void FILL_FLOAT_ARRAY_LIMIT_GT1( arm_float_t *arr, unsigned int count );
+extern void FILL_FLOAT_ARRAY( ne10_float32_t *arr, ne10_uint32_t count );
+extern void FILL_FLOAT_ARRAY_LIMIT( ne10_float32_t *arr, ne10_uint32_t count );
+extern void FILL_FLOAT_ARRAY_LIMIT_GT1( ne10_float32_t *arr, ne10_uint32_t count );
 
-// this function checks whether the difference between two float values is within the acceptable error range
-extern int EQUALS_FLOAT( float fa, float fb , unsigned int err );
-extern int GUARD_ARRAY( arm_float_t* array, unsigned int array_length );
-extern int CHECK_ARRAY_GUARD( arm_float_t* array, unsigned int array_length );
+// this function checks whether the difference between two ne10_float32_t values is within the acceptable error range
+extern int EQUALS_FLOAT( ne10_float32_t fa, ne10_float32_t fb , ne10_uint32_t err );
+extern int GUARD_ARRAY( ne10_float32_t* array, ne10_uint32_t array_length );
+extern int CHECK_ARRAY_GUARD( ne10_float32_t* array, ne10_uint32_t array_length );
 
 #endif // __UNIT_TEST_COMMON
 

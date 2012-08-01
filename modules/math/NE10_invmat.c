@@ -28,9 +28,9 @@
 // This macro is used to determine floating point values that are small enough to be consiedered nearly zero
 #define IS_FLOAT_NEAR_ZERO(x) ( ((fabs(x))<(1e-12)) ? 1 : 0 )
 
-arm_result_t invmat_2x2f_c (arm_mat2x2f_t * dst, arm_mat2x2f_t * src, unsigned int count)
+ne10_result_t invmat_2x2f_c (ne10_mat2x2f_t * dst, ne10_mat2x2f_t * src, ne10_uint32_t count)
 {
-    float det = 0.0f;
+    ne10_float32_t det = 0.0f;
 
     NE10_DETMAT_OPERATION_X_C
     (
@@ -49,7 +49,7 @@ arm_result_t invmat_2x2f_c (arm_mat2x2f_t * dst, arm_mat2x2f_t * src, unsigned i
     );
 }
 
-arm_result_t invmat_3x3f_c (arm_mat3x3f_t * dst, arm_mat3x3f_t * src, unsigned int count)
+ne10_result_t invmat_3x3f_c (ne10_mat3x3f_t * dst, ne10_mat3x3f_t * src, ne10_uint32_t count)
 {
 #define aa   (src[ itr ].c1.r1)
 #define bb   (src[ itr ].c1.r2)
@@ -61,8 +61,8 @@ arm_result_t invmat_3x3f_c (arm_mat3x3f_t * dst, arm_mat3x3f_t * src, unsigned i
 #define hh   (src[ itr ].c3.r2)
 #define ii   (src[ itr ].c3.r3)
 
-    float det = 0.0f;
-    arm_mat2x2f_t A, B, C, D, E, F, G, H, I;
+    ne10_float32_t det = 0.0f;
+    ne10_mat2x2f_t A, B, C, D, E, F, G, H, I;
 
     NE10_DETMAT_OPERATION_X_C
     (
@@ -109,7 +109,7 @@ arm_result_t invmat_3x3f_c (arm_mat3x3f_t * dst, arm_mat3x3f_t * src, unsigned i
 #undef ii
 }
 
-arm_result_t invmat_4x4f_c (arm_mat4x4f_t * dst, arm_mat4x4f_t * src, unsigned int count)
+ne10_result_t invmat_4x4f_c (ne10_mat4x4f_t * dst, ne10_mat4x4f_t * src, ne10_uint32_t count)
 {
 #define aa   (src[ itr ].c1.r1)
 #define bb   (src[ itr ].c1.r2)
@@ -131,8 +131,8 @@ arm_result_t invmat_4x4f_c (arm_mat4x4f_t * dst, arm_mat4x4f_t * src, unsigned i
 #define oo   (src[ itr ].c4.r3)
 #define pp   (src[ itr ].c4.r4)
 
-    float det = 0.0f;
-    arm_mat3x3f_t A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P;
+    ne10_float32_t det = 0.0f;
+    ne10_mat3x3f_t A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P;
 
     NE10_DETMAT_OPERATION_X_C
     (

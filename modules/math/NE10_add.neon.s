@@ -58,7 +58,7 @@ add_float_neon:
 .L_residualloop_float:
         @ process the residual items in the input array
         vld1.f32          d0[0], [r1]!           @ Fill in d0[0]
-        vld1.f32          d1[0], [r2]!           @ Fill in d1[1]
+        vld1.f32          d1[0], [r2]!           @ Fill in d1[0]
 
         subs              r4, r4, #1
 
@@ -85,7 +85,7 @@ add_float_neon:
         vst1.32         {d6,d7}, [r0]!
 
         subs            r3, r3, #1
-        
+
         @ load the next set of values
         vld1.32         {q0}, [r1]!
         vld1.32         {q1}, [r2]!
@@ -120,7 +120,7 @@ add_vec2f_neon:
         @  r3: int count & the number of items in the input array that can be
         @                   processed in chunks of 4 vectors
         @
-        @  r4:  the number of items that are residual that will be processed at the begin of
+        @  r4: the number of items that are residual that will be processed at the begin of
         @                   the input array
         @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -146,7 +146,7 @@ add_vec2f_neon:
 .L_check_mainloop_vec2:
         cbz               r3, .L_return_vec2
 
-        @ load the 1st set of values
+        @ load the current set of values
         vld2.32         {q0-q1}, [r1]!
         vld2.32         {q2-q3}, [r2]!
 
@@ -224,7 +224,7 @@ add_vec3f_neon:
 
         bgt               .L_residualloop_vec3
 
-.L_check_mainloop_vec3:        
+.L_check_mainloop_vec3:
         cbz               r3, .L_return_vec3
 
         @ load current set of values

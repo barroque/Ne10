@@ -38,7 +38,7 @@ void my_suite_teardown (void)
     //printf("I'm done after every single test in the suite\r\n");
 }
 
-int main (int argc, char** argv)
+int main (ne10_int32_t argc, ne10_int8_t** argv)
 {
     suite_setup (my_suite_setup);
     suite_teardown (my_suite_teardown);

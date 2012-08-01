@@ -21,19 +21,19 @@
 #define CPUINFO_BUFFER_SIZE  (1024*4)
 
 // This local variable indicates whether or not the running platform supports ARM NEON
-arm_result_t is_NEON_available = NE10_ERR;
+ne10_result_t is_NEON_available = NE10_ERR;
 
-arm_result_t NE10_HasNEON()
+ne10_result_t NE10_HasNEON()
 {
     return is_NEON_available;
 }
 
-arm_result_t NE10_init()
+ne10_result_t NE10_init()
 {
     FILE*   infofile = NULL;               // To open the file /proc/cpuinfo
-    char    cpuinfo[CPUINFO_BUFFER_SIZE];  // The buffer to read in the string
-    size_t  bytes = 0;                     // Numbers of bytes read from the file
-    int     i = 0;                         // Temporary loop counter
+    ne10_int8_t    cpuinfo[CPUINFO_BUFFER_SIZE];  // The buffer to read in the string
+    ne10_uint32_t  bytes = 0;                     // Numbers of bytes read from the file
+    ne10_int32_t     i = 0;                         // Temporary loop counter
 
     memset (cpuinfo, 0, CPUINFO_BUFFER_SIZE);
     infofile = fopen ("/proc/cpuinfo", "r");
@@ -46,7 +46,7 @@ arm_result_t NE10_init()
         return NE10_ERR;
     }
 
-    while ('\0' != cpuinfo[i]) cpuinfo[i++] = (char) tolower (cpuinfo[i]);
+    while ('\0' != cpuinfo[i]) cpuinfo[i++] = (ne10_int8_t) tolower (cpuinfo[i]);
 
     if (0 != strstr (cpuinfo, "neon"))
     {

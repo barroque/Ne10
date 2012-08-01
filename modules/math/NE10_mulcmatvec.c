@@ -23,7 +23,7 @@
 
 #include <assert.h>
 
-arm_result_t mulcmatvec_cm2x2f_v2f_c (arm_vec2f_t * dst, const arm_mat2x2f_t * cst, arm_vec2f_t * src, unsigned int count)
+ne10_result_t mulcmatvec_cm2x2f_v2f_c (ne10_vec2f_t * dst, const ne10_mat2x2f_t * cst, ne10_vec2f_t * src, ne10_uint32_t count)
 {
 #define A1 cst->c1.r1
 #define B1 cst->c1.r2
@@ -42,7 +42,7 @@ arm_result_t mulcmatvec_cm2x2f_v2f_c (arm_vec2f_t * dst, const arm_mat2x2f_t * c
 #undef D1
 }
 
-arm_result_t mulcmatvec_cm3x3f_v3f_c (arm_vec3f_t * dst, const arm_mat3x3f_t * cst, arm_vec3f_t * src, unsigned int count)
+ne10_result_t mulcmatvec_cm3x3f_v3f_c (ne10_vec3f_t * dst, const ne10_mat3x3f_t * cst, ne10_vec3f_t * src, ne10_uint32_t count)
 {
 #define A1 cst->c1.r1
 #define B1 cst->c1.r2
@@ -72,7 +72,7 @@ arm_result_t mulcmatvec_cm3x3f_v3f_c (arm_vec3f_t * dst, const arm_mat3x3f_t * c
 #undef I1
 }
 
-extern arm_result_t mulcmatvec_cm4x4f_v4f_c (arm_vec4f_t * dst, const arm_mat4x4f_t * cst, arm_vec4f_t * src, unsigned int count)
+extern ne10_result_t mulcmatvec_cm4x4f_v4f_c (ne10_vec4f_t * dst, const ne10_mat4x4f_t * cst, ne10_vec4f_t * src, ne10_uint32_t count)
 {
 #define A1 cst->c1.r1
 #define B1 cst->c1.r2

@@ -27,10 +27,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-arm_result_t divc_float_neon (arm_float_t * dst, arm_float_t * src, const arm_float_t cst, unsigned int count)
+ne10_result_t divc_float_neon (ne10_float32_t * dst, ne10_float32_t * src, const ne10_float32_t cst, ne10_uint32_t count)
 {
-    unsigned int ii = 0;
-    float d[4];
+    ne10_uint32_t ii = 0;
+    ne10_float32_t d[4];
     NE10_XC_OPERATION_FLOAT_NEON
     (
         /* a single division operation */
@@ -47,7 +47,7 @@ arm_result_t divc_float_neon (arm_float_t * dst, arm_float_t * src, const arm_fl
     );
 }
 
-arm_result_t divc_vec2f_neon (arm_vec2f_t * dst, arm_vec2f_t * src, const arm_vec2f_t * cst, unsigned int count)
+ne10_result_t divc_vec2f_neon (ne10_vec2f_t * dst, ne10_vec2f_t * src, const ne10_vec2f_t * cst, ne10_uint32_t count)
 {
     NE10_XC_OPERATION_VEC2F_NEON
     (
@@ -65,7 +65,7 @@ arm_result_t divc_vec2f_neon (arm_vec2f_t * dst, arm_vec2f_t * src, const arm_ve
     );
 }
 
-arm_result_t divc_vec3f_neon (arm_vec3f_t * dst, arm_vec3f_t * src, const arm_vec3f_t * cst, unsigned int count)
+ne10_result_t divc_vec3f_neon (ne10_vec3f_t * dst, ne10_vec3f_t * src, const ne10_vec3f_t * cst, ne10_uint32_t count)
 {
     NE10_XC_OPERATION_VEC3F_NEON
     (
@@ -103,7 +103,7 @@ arm_result_t divc_vec3f_neon (arm_vec3f_t * dst, arm_vec3f_t * src, const arm_ve
     );
 }
 
-arm_result_t divc_vec4f_neon (arm_vec4f_t * dst, arm_vec4f_t * src, const arm_vec4f_t * cst, unsigned int count)
+ne10_result_t divc_vec4f_neon (ne10_vec4f_t * dst, ne10_vec4f_t * src, const ne10_vec4f_t * cst, ne10_uint32_t count)
 {
     NE10_XC_OPERATION_VEC4F_NEON
     (

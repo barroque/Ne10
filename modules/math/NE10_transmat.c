@@ -24,14 +24,14 @@
 
 #include <assert.h>
 
-inline void swap (arm_float_t *a, arm_float_t *b)
+inline void swap (ne10_float32_t *a, ne10_float32_t *b)
 {
-    arm_float_t tmp = *a;
+    ne10_float32_t tmp = *a;
     *a = *b;
     *b = tmp;
 }
 
-arm_result_t transmat_2x2f_c (arm_mat2x2f_t * dst, arm_mat2x2f_t * src, unsigned int count)
+ne10_result_t transmat_2x2f_c (ne10_mat2x2f_t * dst, ne10_mat2x2f_t * src, ne10_uint32_t count)
 {
     NE10_DETMAT_OPERATION_X_C
     (
@@ -42,7 +42,7 @@ arm_result_t transmat_2x2f_c (arm_mat2x2f_t * dst, arm_mat2x2f_t * src, unsigned
     );
 }
 
-arm_result_t transmat_3x3f_c (arm_mat3x3f_t * dst, arm_mat3x3f_t * src, unsigned int count)
+ne10_result_t transmat_3x3f_c (ne10_mat3x3f_t * dst, ne10_mat3x3f_t * src, ne10_uint32_t count)
 {
     NE10_DETMAT_OPERATION_X_C
     (
@@ -60,7 +60,7 @@ arm_result_t transmat_3x3f_c (arm_mat3x3f_t * dst, arm_mat3x3f_t * src, unsigned
     );
 }
 
-arm_result_t transmat_4x4f_c (arm_mat4x4f_t * dst, arm_mat4x4f_t * src, unsigned int count)
+ne10_result_t transmat_4x4f_c (ne10_mat4x4f_t * dst, ne10_mat4x4f_t * src, ne10_uint32_t count)
 {
     NE10_DETMAT_OPERATION_X_C
     (

@@ -48,4 +48,8 @@ Usage
 
 See USAGE.txt file in the "doc" folder
 
+Code formatter
+=====
+
+See Formatter.txt file in the "doc" folder
 

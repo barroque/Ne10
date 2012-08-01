@@ -169,7 +169,7 @@ vmul_vec2f_neon:
 
 .L_mainloopend_vec2:
         @ the last iteration for this call
-        @ store the result for the last set 
+        @ store the result for the last set
         vst2.32         {d8,d9,d10,d11}, [r0]!
 
 .L_check_vec2:
